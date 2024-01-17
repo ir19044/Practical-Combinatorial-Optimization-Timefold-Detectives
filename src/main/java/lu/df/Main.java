@@ -1,5 +1,6 @@
 package lu.df;
 
+import lu.df.domain.DetectiveSolution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,5 +12,8 @@ public class Main {
 
         LOGGER.info("Hello world from Logger!");
         LOGGER.debug("Hello from debug!");
+
+        DetectiveSolution problem = DetectiveSolution.generateData();
+        problem.print();
     }
 }
