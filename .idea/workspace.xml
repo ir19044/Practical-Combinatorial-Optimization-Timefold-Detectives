@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Initial commit">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added problem domain. Generated 1st dataset for testing.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +85,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705519684148</updated>
-      <workItem from="1705519685350" duration="5694000" />
+      <workItem from="1705519685350" duration="10007000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -89,7 +95,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705519814789</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added problem domain. Generated 1st dataset for testing.">
+      <option name="closed" value="true" />
+      <created>1705525760391</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705525760391</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,6 +111,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="Added problem domain. Generated 1st dataset for testing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added problem domain. Generated 1st dataset for testing." />
   </component>
 </project>

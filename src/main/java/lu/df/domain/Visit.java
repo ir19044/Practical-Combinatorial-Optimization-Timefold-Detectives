@@ -1,5 +1,8 @@
 package lu.df.domain;
 
+import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +20,12 @@ public class Visit {
 
     private Location location;
 
+    @InverseRelationShadowVariable(sourceVariableName = "visits")
+    private Detective detective;
+
+    @NextElementShadowVariable(sourceVariableName = "visits")
+    private Visit next;
+
+    @PreviousElementShadowVariable(sourceVariableName = "visits")
+    private Visit prev;
 }

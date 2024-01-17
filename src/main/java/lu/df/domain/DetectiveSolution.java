@@ -38,7 +38,7 @@ public class DetectiveSolution {
 
     public void print(){
         this.getDetectiveList().forEach(detective -> {
-            LOGGER.info(detective.getEmpNr() + "(" + detective.getExperienceMonths() + ")");
+            LOGGER.info(detective.getEmpNr() + "(lvl: " + detective.getExperienceMonths() + ")");
             detective.getVisits().forEach(visit -> {
                 LOGGER.info("     " + visit.getName() + " "
                         + visit.getVisitType() + "(" + visit.getExpMonths() +")");

@@ -13,7 +13,7 @@ public class Location {
     private Double lon;
 
     public Double distanceTo(Location location){
-        return 0.0;
+        return Math.sqrt(Math.pow(this.lat - location.lat, 2) + Math.pow(this.lon - location.lon, 2));
     }
 
     public Double timeTo(Location location){
