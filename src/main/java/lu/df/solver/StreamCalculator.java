@@ -23,7 +23,8 @@ public class StreamCalculator implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
                 totalDistance(constraintFactory),
-                oneGroupOneProtocol(constraintFactory)
+                oneGroupOneProtocol(constraintFactory),
+                detectiveThiefGroupLevelMatch(constraintFactory)
         };
     }
 
@@ -49,5 +50,12 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("oneGroupOneProtocol");
     }
 
-    // level
+    public Constraint detectiveThiefGroupLevelMatch(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .join(Detective.class, equal(Visit::getDetective, v -> v))
+                .penalize(HardSoftScore.ONE_SOFT, (visit, detective) ->
+                        Math.max(visit.getExpMonths()-detective.getExperienceMonths(), 0)*10)
+                .asConstraint("detectiveThiefGroupLevelMatch");
+    }
 }
