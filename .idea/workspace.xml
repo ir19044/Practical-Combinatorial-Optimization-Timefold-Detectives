@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added problem domain. Generated 1st dataset for testing.">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added total distance calculation function for detective. Added basic ScoreCalculator for cost f (TODO: StreamCalculator)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lu/df/ConstraintTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lu/df/ConstraintTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,9 +29,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2b5zME5yVaEealtVXTN2OQOpvM9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -43,6 +44,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/Programmesana/Magistrs/I semestris/Praktiska_kombinatoriala_optimizacija/FINAL-TEST_VERSION/lv.lu.df.combopt2003",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -57,7 +59,7 @@
       <recent name="D:\Programmesana\Magistrs\I semestris\Praktiska_kombinatoriala_optimizacija\Lielais_praktiskais_darbs\CO_2024_Detectives\src\main\java\lu\df" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="lu.df.Main" />
       <module name="CO_2024_Detectives" />
@@ -71,9 +73,76 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ConstraintTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CO_2024_Detectives" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lu.df.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="lu.df" />
+      <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConstraintTest.oneGroupOneProtocolTest_InvalidPath_1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CO_2024_Detectives" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lu.df.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="lu.df" />
+      <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
+      <option name="METHOD_NAME" value="oneGroupOneProtocolTest_InvalidPath_1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConstraintTest.oneGroupOneProtocolTest_ValidPath_0" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CO_2024_Detectives" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lu.df.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="lu.df" />
+      <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
+      <option name="METHOD_NAME" value="oneGroupOneProtocolTest_ValidPath_0" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConstraintTest.totalDistanceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CO_2024_Detectives" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lu.df.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="lu.df" />
+      <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
+      <option name="METHOD_NAME" value="totalDistanceTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_ValidPath_0" />
+        <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_InvalidPath_1" />
+        <item itemvalue="JUnit.ConstraintTest" />
+        <item itemvalue="JUnit.ConstraintTest.totalDistanceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -85,7 +154,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705519684148</updated>
-      <workItem from="1705519685350" duration="10007000" />
+      <workItem from="1705519685350" duration="17777000" />
+      <workItem from="1705607807175" duration="7428000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -103,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705525760391</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added total distance calculation function for detective. Added basic ScoreCalculator for cost f (TODO: StreamCalculator)">
+      <option name="closed" value="true" />
+      <created>1705530605379</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705530605380</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -112,6 +190,33 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Added problem domain. Generated 1st dataset for testing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added problem domain. Generated 1st dataset for testing." />
+    <MESSAGE value="Added total distance calculation function for detective. Added basic ScoreCalculator for cost f (TODO: StreamCalculator)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added total distance calculation function for detective. Added basic ScoreCalculator for cost f (TODO: StreamCalculator)" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java</url>
+          <line>59</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/ScoreCalculator.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

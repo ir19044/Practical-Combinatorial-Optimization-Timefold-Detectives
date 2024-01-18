@@ -22,6 +22,9 @@ public class Detective {
     @PlanningListVariable // CHANGEABLE
     private List<Visit> visits = new ArrayList<>();
 
+    private Double costDistance;
+
+
     public Double getTotalDistance(){
 
         // 1. Step - start working in office
@@ -44,4 +47,8 @@ public class Detective {
         return totalDistance;
     }
 
+    @Override
+    public String toString() {
+        return this.getEmpNr();
+    }
 }

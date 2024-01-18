@@ -51,29 +51,58 @@ public class DetectiveSolution {
         DetectiveSolution problem = new DetectiveSolution();
         problem.setSolutionId("P1");
 
-        // 2. Step - Define detectives
+        // 2. Step - Define data
+
+        // Office - 1
+        for (int i = 1; i <= 3; i++) {
+            Visit ofc1 = new Visit();
+            ofc1.setName("Office1-#"+i);
+            ofc1.setExpMonths(0); // redundant, default value
+            ofc1.setVisitType(Visit.VisitType.PROTOCOL);
+
+            Location ofc1Loc = new Location(0.0, 0.0);
+            ofc1.setLocation(ofc1Loc);
+            problem.getLocationList().add(ofc1Loc);
+            problem.getVisitList().add(ofc1);
+        }
+
+        // Office - 2
+        for (int i = 1; i <= 3; i++) {
+            Visit ofc2 = new Visit();
+            ofc2.setName("Office2-#"+i);
+            ofc2.setExpMonths(0); // redundant, default value
+            ofc2.setVisitType(Visit.VisitType.PROTOCOL);
+
+            Location ofc2Loc = new Location(6.0, 6.0);
+            ofc2.setLocation(ofc2Loc);
+            problem.getLocationList().add(ofc2Loc);
+            problem.getVisitList().add(ofc2);
+        }
 
         // Detective 1
         Detective d1 = new Detective();
         d1.setEmpNr("Detective-1");
         d1.setExperienceMonths(15);
 
-        Location detectiveLoc1 = new Location(0.0, 0.0);
-        d1.setWorkOffice(detectiveLoc1);
+        Location detLoc1 = new Location(0.0, 0.0);
+        d1.setWorkOffice(detLoc1);
+        d1.setCostDistance(0.1);
 
         // Detective 2
         Detective d2 = new Detective();
         d2.setEmpNr("Detective-2");
         d2.setExperienceMonths(20);
-        d2.setWorkOffice(detectiveLoc1);
+        d2.setWorkOffice(detLoc1);
+        d2.setCostDistance(0.1);
 
         // Detective 3
         Detective d3 = new Detective();
         d3.setEmpNr("Detective-3");
         d3.setExperienceMonths(15);
 
-        Location detectiveLoc2 = new Location(6.0, 6.0);
-        d3.setWorkOffice(detectiveLoc2);
+        Location detLoc2 = new Location(6.0, 6.0);
+        d3.setWorkOffice(detLoc2);
+        d3.setCostDistance(0.1);
 
         // ThiefGroup 1
         Visit t1 = new Visit();
@@ -111,30 +140,11 @@ public class DetectiveSolution {
         Location t4Loc = new Location(6.0, 2.0);
         t4.setLocation(t4Loc);
 
-        // Office - 1
-        Visit ofc1 = new Visit();
-        ofc1.setName("Office-1");
-        ofc1.setExpMonths(0); // redundant, default value
-        ofc1.setVisitType(Visit.VisitType.PROTOCOL);
-
-        Location ofc1Loc = new Location(0.0, 0.0);
-        ofc1.setLocation(ofc1Loc);
-
-        // Office - 2
-        Visit ofc2 = new Visit();
-        ofc2.setName("Office-2");
-        ofc2.setExpMonths(0); // redundant, default value
-        ofc2.setVisitType(Visit.VisitType.PROTOCOL);
-
-        Location ofc2Loc = new Location(6.0, 6.0);
-        ofc2.setLocation(ofc2Loc);
-
         // Fill detective, office and visits lists
 
         problem.getDetectiveList().addAll(List.of(d1, d2, d3));
-        problem.getLocationList().addAll(List.of(
-                detectiveLoc1, detectiveLoc2, t1Loc, t2Loc, t3Loc, t4Loc, ofc1Loc, ofc2Loc));
-        problem.getVisitList().addAll(List.of(t1, t2, t3, t4, ofc1, ofc2));
+        problem.getLocationList().addAll(List.of(t1Loc, t2Loc, t3Loc, t4Loc, detLoc1, detLoc2));
+        problem.getVisitList().addAll(List.of(t1, t2, t3, t4));
 
         return problem;
     }
