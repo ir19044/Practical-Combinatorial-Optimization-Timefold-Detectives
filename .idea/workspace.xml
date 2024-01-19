@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Replaced EasyScoreCalculator by ConstraintProvider. Added oneGroupOneProtocol HARD constraint. Added unit tests.">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added detectiveThiefGroupLevelMatch soft constraint. Cannot visit thief group if its lvl. &gt; detective experience lvl.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lu/df/ConstraintTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lu/df/ConstraintTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,22 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/Programmesana/Magistrs/I semestris/Praktiska_kombinatoriala_optimizacija/FINAL-TEST_VERSION/lv.lu.df.combopt2003",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "D:/Programmesana/Magistrs/I semestris/Praktiska_kombinatoriala_optimizacija/Lielais_praktiskais_darbs/CO_2024_Detectives/src/main/java/lu/df/Main.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Programmesana/Magistrs/I semestris/Praktiska_kombinatoriala_optimizacija/FINAL-TEST_VERSION/lv.lu.df.combopt2003&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;D:/Programmesana/Magistrs/I semestris/Praktiska_kombinatoriala_optimizacija/Lielais_praktiskais_darbs/CO_2024_Detectives/src/main/java/lu/df/Main.java&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Programmesana\Magistrs\I semestris\Praktiska_kombinatoriala_optimizacija\Lielais_praktiskais_darbs\CO_2024_Detectives\src\main\java\lu\df" />
@@ -113,7 +120,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConstraintTest.totalDistanceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ConstraintTest.totalDistanceTest_OfficeVisit1Visit2_80" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CO_2024_Detectives" />
       <extension name="coverage">
         <pattern>
@@ -123,7 +130,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="lu.df" />
       <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
-      <option name="METHOD_NAME" value="totalDistanceTest" />
+      <option name="METHOD_NAME" value="totalDistanceTest_OfficeVisit1Visit2_80" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -132,10 +139,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.ConstraintTest.totalDistanceTest_OfficeVisit1Visit2_80" />
         <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_ValidPath_0" />
         <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_InvalidPath_1" />
         <item itemvalue="JUnit.ConstraintTest" />
-        <item itemvalue="JUnit.ConstraintTest.totalDistanceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -148,7 +155,8 @@
       <option name="presentableId" value="Default" />
       <updated>1705519684148</updated>
       <workItem from="1705519685350" duration="17777000" />
-      <workItem from="1705607807175" duration="8279000" />
+      <workItem from="1705607807175" duration="11634000" />
+      <workItem from="1705670380693" duration="26018000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -182,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705615627671</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added detectiveThiefGroupLevelMatch soft constraint. Cannot visit thief group if its lvl. &gt; detective experience lvl.">
+      <option name="closed" value="true" />
+      <created>1705616248352</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705616248352</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,16 +209,12 @@
     <MESSAGE value="Added problem domain. Generated 1st dataset for testing." />
     <MESSAGE value="Added total distance calculation function for detective. Added basic ScoreCalculator for cost f (TODO: StreamCalculator)" />
     <MESSAGE value="Replaced EasyScoreCalculator by ConstraintProvider. Added oneGroupOneProtocol HARD constraint. Added unit tests." />
-    <option name="LAST_COMMIT_MESSAGE" value="Replaced EasyScoreCalculator by ConstraintProvider. Added oneGroupOneProtocol HARD constraint. Added unit tests." />
+    <MESSAGE value="Added detectiveThiefGroupLevelMatch soft constraint. Cannot visit thief group if its lvl. &gt; detective experience lvl." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added detectiveThiefGroupLevelMatch soft constraint. Cannot visit thief group if its lvl. &gt; detective experience lvl." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/ScoreCalculator.java</url>
           <line>18</line>
@@ -210,15 +222,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java</url>
-          <line>82</line>
-          <option name="timeStamp" value="18" />
+          <line>62</line>
+          <option name="timeStamp" value="99" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="lu.df.domain.Detective" memberName="experienceMonths" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

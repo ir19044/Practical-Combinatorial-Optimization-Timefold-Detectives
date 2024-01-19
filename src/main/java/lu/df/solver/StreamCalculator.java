@@ -58,4 +58,6 @@ public class StreamCalculator implements ConstraintProvider {
                         Math.max(visit.getExpMonths()-detective.getExperienceMonths(), 0)*10)
                 .asConstraint("detectiveThiefGroupLevelMatch");
     }
+
+    //public Constraint
 }

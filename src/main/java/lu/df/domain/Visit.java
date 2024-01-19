@@ -4,15 +4,42 @@ import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lu.df.solver.VisitedThiefListener;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @PlanningEntity
 @Getter @Setter @NoArgsConstructor
 public class Visit {
 
     public enum VisitType {PHOTO, PROTOCOL}
+
+    @Getter @Setter
+    public static class Thief { private int id; private String name;
+        public Thief(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Thief thief = (Thief) o;
+            return id == thief.id && Objects.equals(name, thief.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
+        }
+    }
 
     private String name; // thief group name / office name
 
@@ -22,6 +49,8 @@ public class Visit {
 
     private Location location;
 
+    private Set<Thief> thiefSet;
+
     @InverseRelationShadowVariable(sourceVariableName = "visits")
     private Detective detective;
 
@@ -30,6 +59,12 @@ public class Visit {
 
     @PreviousElementShadowVariable(sourceVariableName = "visits")
     private Visit prev;
+
+    // If at least one changed, then recalculate thiefList
+    @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "detective")
+    @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "prev")
+    @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "next")
+    private Set<Thief> thiefSetAll = new HashSet<>();
 
     @Override
     public String toString() {

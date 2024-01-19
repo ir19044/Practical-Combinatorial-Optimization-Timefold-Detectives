@@ -5,6 +5,9 @@ import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lu.df.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ public class Detective {
         // 2. Step - change office to thief group location / office again
 
         for (Visit visit: this.getVisits()){
-            totalDistance += prevLoc.distanceTo(visit.getLocation());
+            totalDistance += prevLoc.distanceTo(visit.getLocation(), visit);
             prevLoc = visit.getLocation();
         }
 

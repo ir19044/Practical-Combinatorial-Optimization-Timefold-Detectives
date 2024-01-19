@@ -5,6 +5,7 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.solver.SolutionManager;
 import ai.timefold.solver.core.api.solver.Solver;
 import ai.timefold.solver.core.api.solver.SolverFactory;
+import ai.timefold.solver.core.config.solver.EnvironmentMode;
 import ai.timefold.solver.core.config.solver.SolverConfig;
 import ai.timefold.solver.core.config.solver.termination.TerminationConfig;
 import lu.df.domain.Detective;
@@ -35,6 +36,7 @@ public class Main {
                         .withConstraintProviderClass(StreamCalculator.class)
                         .withTerminationConfig(new TerminationConfig()
                                 .withSecondsSpentLimit(10L)) // 10 seconds for work
+                        .withEnvironmentMode(EnvironmentMode.FULL_ASSERT)
         );
 
         Solver<DetectiveSolution> solver = solverFactory.buildSolver();
