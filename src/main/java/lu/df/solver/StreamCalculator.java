@@ -1,19 +1,18 @@
 package lu.df.solver;
 
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
-import ai.timefold.solver.core.api.score.stream.Constraint;
-import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
-import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
-import ai.timefold.solver.core.api.score.stream.Joiners;
+import ai.timefold.solver.core.api.score.stream.*;
 import lu.df.Main;
 import lu.df.domain.Detective;
 import lu.df.domain.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Objects;
-
+import java.util.Set;
+import lu.df.domain.Visit.Thief;
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
+import static java.util.Collections.max;
+import static java.util.stream.Collectors.toSet;
 
 public class StreamCalculator implements ConstraintProvider {
 
@@ -24,7 +23,9 @@ public class StreamCalculator implements ConstraintProvider {
         return new Constraint[] {
                 totalDistance(constraintFactory),
                 oneGroupOneProtocol(constraintFactory),
-                detectiveThiefGroupLevelMatch(constraintFactory)
+                detectiveThiefGroupLevelMatch(constraintFactory),
+                //groupMinimalCover(constraintFactory)
+                photoTime(constraintFactory)
         };
     }
 
@@ -59,5 +60,30 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("detectiveThiefGroupLevelMatch");
     }
 
-    //public Constraint
+    /*
+     Penalize by UNCOVERED set size
+    public Constraint groupMinimalCover(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Detective.class)
+                .filter(detective -> !detective.getVisits().isEmpty())
+                .join(Visit.class, Joiners.equal(v->v, Visit::getDetective))
+                .groupBy((detective,visit) ->  visit.getCoveredSett())
+
+                //.groupBy(Visit::getMaximalThiefSet,ConstraintCollectors.max(Visit::getSizeOfCoveredSet))
+                .penalize(HardSoftScore.ONE_SOFT, v -> v.size())
+                .asConstraint("groupMinimalCover");
+
+                //.filter(visit -> ConstraintCollectors.max(Visit::getThiefSetAllSize).equals(visit.getThiefSetAll().size()))
+               // .penalize(HardSoftScore.ONE_SOFT, visit -> visit.g)
+
+    }
+     */
+
+    public Constraint photoTime(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO && visit.getPhotoTime() != null)
+                .penalize(HardSoftScore.ONE_SOFT, visit -> visit.getPhotoTime())
+                .asConstraint("photoTime");
+    }
 }

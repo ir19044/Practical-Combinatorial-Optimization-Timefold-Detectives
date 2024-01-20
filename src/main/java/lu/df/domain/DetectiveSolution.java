@@ -15,12 +15,32 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import lu.df.domain.Visit.Thief;
 
 
 @PlanningSolution
 @Getter @Setter @NoArgsConstructor
 public class DetectiveSolution {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetectiveSolution.class);
+    private static final Integer HOUR = 3600;
+    private static final Integer DAY = HOUR * 24;
+    private static final Integer TIME8AM = 8 * HOUR;
+
+    public enum WeekDay {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY}
+
+    private static Integer getWeekDay(WeekDay day){
+        return switch (day) {
+            case MONDAY -> 0;
+            case TUESDAY -> DAY;
+            case WEDNESDAY -> 2 * DAY;
+            case THURSDAY -> 3 * DAY;
+            case FRIDAY -> 4 * DAY;
+            case SATURDAY -> 5 * DAY;
+            case SUNDAY -> 6 * DAY;
+        };
+    }
 
     private String solutionId;
 
@@ -50,7 +70,8 @@ public class DetectiveSolution {
                 }
 
                 LOGGER.info("     " + visit.getName() + " "
-                        + visit.getVisitType() + "(" + visit.getExpMonths() +")" + "  dist:"+ dist);
+                        + visit.getVisitType() + "(" + visit.getExpMonths() +")" + "  dist:"+ dist +
+                        "  photoTime:"+visit.getPhotoTime());
 
             });
         });
@@ -70,6 +91,9 @@ public class DetectiveSolution {
             ofc1.setExpMonths(0); // redundant, default value
             ofc1.setVisitType(Visit.VisitType.PROTOCOL);
 
+            ofc1.setTwStart(getWeekDay(WeekDay.MONDAY));
+            ofc1.setTwFinish(getWeekDay(WeekDay.SUNDAY) + 24 * HOUR);
+
             Location ofc1Loc = new Location(0.0, 0.0);
             ofc1.setLocation(ofc1Loc);
             problem.getLocationList().add(ofc1Loc);
@@ -83,6 +107,9 @@ public class DetectiveSolution {
             ofc2.setExpMonths(0); // redundant, default value
             ofc2.setVisitType(Visit.VisitType.PROTOCOL);
 
+            ofc2.setTwStart(getWeekDay(WeekDay.MONDAY));
+            ofc2.setTwFinish(getWeekDay(WeekDay.SUNDAY) + 24 * HOUR);
+
             Location ofc2Loc = new Location(6.0, 6.0);
             ofc2.setLocation(ofc2Loc);
             problem.getLocationList().add(ofc2Loc);
@@ -93,6 +120,13 @@ public class DetectiveSolution {
         Detective d1 = new Detective();
         d1.setEmpNr("Detective-1");
         d1.setExperienceMonths(15);
+
+        d1.setTwStart(8 * HOUR); // Time to start work (foreach work day)
+        d1.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
+        d1.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
+        d1.setMaxGroupCount(2);
+
+        d1.setHasCar(true);
 
         Location detLoc1 = new Location(0.0, 0.0);
         d1.setWorkOffice(detLoc1);
@@ -105,10 +139,20 @@ public class DetectiveSolution {
         d2.setWorkOffice(detLoc1);
         d2.setCostDistance(0.1);
 
+        d2.setTwStart(8 * HOUR); // Time to start work (foreach work day)
+        d2.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
+        d2.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
+        d2.setMaxGroupCount(2);
+
         // Detective 3
         Detective d3 = new Detective();
         d3.setEmpNr("Detective-3");
-        d3.setExperienceMonths(15);
+        d3.setExperienceMonths(21);
+
+        d3.setTwStart(8 * HOUR); // Time to start work (foreach work day)
+        d3.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
+        d3.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
+        d3.setMaxGroupCount(2);
 
         Location detLoc2 = new Location(6.0, 6.0);
         d3.setWorkOffice(detLoc2);
@@ -123,7 +167,10 @@ public class DetectiveSolution {
             add(new Visit.Thief(2, "Thief2"));
             add(new Visit.Thief(3, "Thief3"));
         }});
+
         t1.setVisitType(Visit.VisitType.PHOTO);
+        t1.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t1.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
 
         Location t1Loc = new Location(0.0, 2.0);
         t1.setLocation(t1Loc);
@@ -134,9 +181,12 @@ public class DetectiveSolution {
         t2.setExpMonths(1);
         t2.setThiefSet(new HashSet<>() {{
             add(new Visit.Thief(4, "Thief4"));
-            add(new Visit.Thief(5, "Thief5"));
+            add(new Visit.Thief(1, "Thief1"));
         }});
+
         t2.setVisitType(Visit.VisitType.PHOTO);
+        t2.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t2.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
 
         Location t2Loc = new Location(0.0, 2.0);
         t2.setLocation(t2Loc);
@@ -149,6 +199,9 @@ public class DetectiveSolution {
             add(new Visit.Thief(1, "Thief1"));
             add(new Visit.Thief(6, "Thief6"));
         }});
+
+        t3.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t3.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
         t3.setVisitType(Visit.VisitType.PHOTO);
 
         Location t3Loc = new Location(5.0, 5.0);
@@ -157,23 +210,45 @@ public class DetectiveSolution {
         // ThiefGroup - 4
         Visit t4 = new Visit();
         t4.setName("ThiefGroup-4");
-        t4.setExpMonths(10);
+        t4.setExpMonths(21);
         t4.setThiefSet(new HashSet<>() {{
             add(new Visit.Thief(1, "Thief1"));
             add(new Visit.Thief(2, "Thief2"));
             add(new Visit.Thief(3, "Thief3"));
             add(new Visit.Thief(4, "Thief4"));
         }});
+
         t4.setVisitType(Visit.VisitType.PHOTO);
+        t4.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t4.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
 
         Location t4Loc = new Location(6.0, 2.0);
         t4.setLocation(t4Loc);
+
+        // max thief set size
+        Set<Thief> maximalSet = new HashSet<>(){{
+            add(new Visit.Thief(1, "Thief1"));
+            add(new Visit.Thief(2, "Thief2"));
+            add(new Visit.Thief(3, "Thief3"));
+            add(new Visit.Thief(4, "Thief4"));
+            add(new Visit.Thief(5, "Thief5"));
+            add(new Visit.Thief(6, "Thief6"));
+        }};
+
+        t1.setMaximalThiefSet(maximalSet);
+        t2.setMaximalThiefSet(maximalSet);
+        t3.setMaximalThiefSet(maximalSet);
+        t4.setMaximalThiefSet(maximalSet);
 
         // Fill detective, office and visits lists
 
         problem.getDetectiveList().addAll(List.of(d1, d2, d3));
         problem.getLocationList().addAll(List.of(t1Loc, t2Loc, t3Loc, t4Loc, detLoc1, detLoc2));
         problem.getVisitList().addAll(List.of(t1, t2, t3, t4));
+
+        d1.getDetectives().addAll(List.of(d1, d2, d3));
+        d2.getDetectives().addAll(List.of(d1, d2, d3));
+        d3.getDetectives().addAll(List.of(d1, d2, d3));
 
         return problem;
     }
@@ -192,6 +267,9 @@ public class DetectiveSolution {
             ofc1.setExpMonths(0); // redundant, default value
             ofc1.setVisitType(Visit.VisitType.PROTOCOL);
 
+            ofc1.setTwStart(getWeekDay(WeekDay.MONDAY));
+            ofc1.setTwFinish(getWeekDay(WeekDay.SUNDAY) + 24 * HOUR);
+
             Location ofc1Loc = new Location(0.0, 0.0);
             ofc1.setLocation(ofc1Loc);
             problem.getLocationList().add(ofc1Loc);
@@ -203,9 +281,18 @@ public class DetectiveSolution {
         d1.setEmpNr("Detective-1");
         d1.setExperienceMonths(15);
 
+        d1.setTwStart(8 * HOUR); // Time to start work (foreach work day)
+        d1.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
+        d1.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
+        d1.setMaxGroupCount(2);
+
+        d1.setHasCar(true);
+
         Location detLoc1 = new Location(0.0, 0.0);
         d1.setWorkOffice(detLoc1);
+
         d1.setCostDistance(0.1);
+        d1.setCostWorkTime(8.0);
 
         // ThiefGroup 1
         Visit t1 = new Visit();
@@ -216,7 +303,10 @@ public class DetectiveSolution {
             add(new Visit.Thief(2, "Thief2"));
             add(new Visit.Thief(3, "Thief3"));
         }});
+
         t1.setVisitType(Visit.VisitType.PHOTO);
+        t1.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t1.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
 
         Location t1Loc = new Location(0.0, 2.0);
         t1.setLocation(t1Loc);
@@ -229,7 +319,10 @@ public class DetectiveSolution {
             add(new Visit.Thief(2, "Thief2"));
             add(new Visit.Thief(3, "Thief3"));
         }});
+
         t2.setVisitType(Visit.VisitType.PHOTO);
+        t2.setTwStart(getWeekDay(WeekDay.TUESDAY)+ 10 * HOUR);
+        t2.setTwFinish(getWeekDay(WeekDay.TUESDAY) + 13 * HOUR);
 
         Location t2Loc = new Location(0.0, 3.0);
         t2.setLocation(t2Loc);
@@ -242,10 +335,25 @@ public class DetectiveSolution {
             add(new Visit.Thief(2, "Thief2"));
             add(new Visit.Thief(4, "Thief4"));
         }});
+
         t3.setVisitType(Visit.VisitType.PHOTO);
+        t3.setTwStart(getWeekDay(WeekDay.MONDAY)+ 6 * HOUR);
+        t3.setTwFinish(getWeekDay(WeekDay.MONDAY) + 11 * HOUR);
 
         Location t3Loc = new Location(0.0, 5.0);
         t3.setLocation(t3Loc);
+
+        // max thief set size
+        Set<Thief> maximalSet = new HashSet<>(){{
+            add(new Visit.Thief(1, "Thief1"));
+            add(new Visit.Thief(2, "Thief2"));
+            add(new Visit.Thief(3, "Thief3"));
+            add(new Visit.Thief(4, "Thief4"));
+        }};
+
+        t1.setMaximalThiefSet(maximalSet);
+        t2.setMaximalThiefSet(maximalSet);
+        t3.setMaximalThiefSet(maximalSet);
 
         // Fill detective, office and visits lists
 
@@ -253,6 +361,7 @@ public class DetectiveSolution {
         problem.getLocationList().addAll(List.of(t1Loc, t2Loc, t3Loc, detLoc1));
         problem.getVisitList().addAll(List.of(t1, t2, t3));
 
+        d1.getDetectives().addAll(List.of(d1));
         return problem;
     }
 }

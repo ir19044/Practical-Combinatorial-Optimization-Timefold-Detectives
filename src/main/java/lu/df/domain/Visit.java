@@ -1,14 +1,14 @@
 package lu.df.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
-import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lu.df.Main;
 import lu.df.solver.VisitedThiefListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,6 +17,7 @@ import java.util.Set;
 @PlanningEntity
 @Getter @Setter @NoArgsConstructor
 public class Visit {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public enum VisitType {PHOTO, PROTOCOL}
 
@@ -51,6 +52,8 @@ public class Visit {
 
     private Set<Thief> thiefSet;
 
+    private Set<Thief> maximalThiefSet;
+
     @InverseRelationShadowVariable(sourceVariableName = "visits")
     private Detective detective;
 
@@ -63,8 +66,25 @@ public class Visit {
     // If at least one changed, then recalculate thiefList
     @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "detective")
     @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "prev")
-    @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "next")
-    private Set<Thief> thiefSetAll = new HashSet<>();
+    //@ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "next")
+    private Set<Thief> coveredSet = new HashSet<>();
+
+    private Integer twStart;  // Time window START to visit this item
+
+    private Integer twFinish; // Time window FINISH to visit this item
+
+    @PiggybackShadowVariable(shadowVariableName = "coveredSet") // depends on detective lvl and thief group lvl
+    private Integer photoTime; // Time to take a photo
+
+    @PiggybackShadowVariable(shadowVariableName = "coveredSet") // depends on planning
+    private Integer arrivalTime = null;
+
+    public Integer getDepartureTime() {
+        return this.getArrivalTime() != null ?
+                //Math.max(this.getArrivalTime(), this.getTwStart()) + this.getSrvTime() :
+                0:
+                null;
+    }
 
     @Override
     public String toString() {

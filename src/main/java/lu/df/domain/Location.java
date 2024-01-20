@@ -12,20 +12,23 @@ public class Location {
 
     private Double lon;
 
+    private static Integer CAR_SPEED = 200;
+    private static Integer AVG_SPEED = 50;
+
     public Double distanceTo(Location location, Visit visit){
-        if ( visit.getPrev() != null && visit.getPrev().getThiefSetAll() != null && visit.getThiefSet() != null &&
+        if ( visit.getPrev() != null && visit.getPrev().getCoveredSet() != null && visit.getThiefSet() != null &&
                 visit.getVisitType() == Visit.VisitType.PHOTO &&
                 visit.getPrev().getVisitType() == Visit.VisitType.PROTOCOL &&
-                visit.getPrev().getThiefSetAll().containsAll(visit.getThiefSet()))
+                visit.getPrev().getCoveredSet().containsAll(visit.getThiefSet()))
         {
             return 0.0;
         }
 
-        if ( visit.getPrev() != null && visit.getPrev().getThiefSetAll() != null && visit.getPrev().getPrev() != null &&
+        if ( visit.getPrev() != null && visit.getPrev().getCoveredSet() != null && visit.getPrev().getPrev() != null &&
                 visit.getVisitType() == Visit.VisitType.PROTOCOL &&
                 visit.getPrev().getVisitType() == Visit.VisitType.PHOTO &&
                 visit.getPrev().getPrev().getVisitType() == Visit.VisitType.PROTOCOL &&
-                visit.getPrev().getPrev().getThiefSetAll().containsAll(visit.getPrev().getThiefSet()))
+                visit.getPrev().getPrev().getCoveredSet().containsAll(visit.getPrev().getThiefSet()))
         {
             return 0.0;
         }
@@ -33,7 +36,9 @@ public class Location {
         return Math.sqrt(Math.pow(this.lat - location.lat, 2) + Math.pow(this.lon - location.lon, 2));
     }
 
-    public Double timeTo(Location location){
-        return 0.0;
+    public Integer timeTo(Location location, Detective detective, Visit visit){
+        Integer speed = detective.getHasCar() ? CAR_SPEED : AVG_SPEED;
+
+        return (int) Math.round((this.distanceTo(location, visit) / speed) * 3600);
     }
 }
