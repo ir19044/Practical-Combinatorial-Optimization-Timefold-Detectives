@@ -63,10 +63,9 @@ public class Detective {
         return totalDistance;
     }
 
-    public final boolean isGivenSetAlreadyCoveredByAnotherSets(Visit visit){
+    public final boolean isGivenSetCoveredByAnotherSets(Visit visit){
 
         Set<Thief> thiefSet = visit.getThiefSet();
-
         Set<Thief> coveredByAll = new HashSet<>();
 
         for(Detective detective: this.getDetectives()){
@@ -77,7 +76,7 @@ public class Detective {
         return coveredByAll.containsAll(thiefSet);
     }
 
-    public Set<Thief> getCovered(Detective detective, Visit visit){
+    private Set<Thief> getCovered(Detective detective, Visit visit){
         Set<Thief> foundCovered = new HashSet<>();
 
         for(Visit v: detective.getVisits()){

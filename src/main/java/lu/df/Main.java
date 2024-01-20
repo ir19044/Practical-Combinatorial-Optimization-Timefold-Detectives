@@ -21,26 +21,29 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-
-        LOGGER.info("Hello world from Logger!");
-        LOGGER.debug("Hello from debug!");
+        // 1. Step - Define problem
 
         DetectiveSolution problem = DetectiveSolution.generateData();
         problem.print();
+
+        // 2. Step - Define SolverFactory
 
         SolverFactory<DetectiveSolution> solverFactory = SolverFactory.create(
                 new SolverConfig()
                         .withSolutionClass(DetectiveSolution.class)
                         .withEntityClasses(Detective.class, Visit.class) // CHANGEABLE thing
-                        //.withEasyScoreCalculatorClass(ScoreCalculator.class)
                         .withConstraintProviderClass(StreamCalculator.class)
                         .withTerminationConfig(new TerminationConfig()
                                 .withSecondsSpentLimit(10L)) // 10 seconds for work
                         .withEnvironmentMode(EnvironmentMode.FULL_ASSERT)
         );
 
+        // 3. Step - Solve
+
         Solver<DetectiveSolution> solver = solverFactory.buildSolver();
         DetectiveSolution solution = solver.solve(problem);
+
+        // 4. Step - Explain and print
 
         SolutionManager<DetectiveSolution, HardSoftScore> solutionManager = SolutionManager.create(solverFactory);
         ScoreExplanation<DetectiveSolution, HardSoftScore> scoreExplanation = solutionManager.explain(solution);

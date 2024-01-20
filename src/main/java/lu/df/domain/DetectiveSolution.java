@@ -62,16 +62,26 @@ public class DetectiveSolution {
             LOGGER.info(detective.getEmpNr() + "(lvl: " + detective.getExperienceMonths() + ")");
             detective.getVisits().forEach(visit -> {
                 Double dist = null;
+                Integer time = null;
                 if( visit.getPrev() != null) {
                     dist = Math.round(visit.getPrev().getLocation().distanceTo(visit.getLocation(), visit)*100.0)/100.0;
+                    time = visit.getPrev().getLocation().timeTo(visit.getLocation(), visit.getDetective(), visit);
                 }
                 else if ( visit.getVisitType() == Visit.VisitType.PHOTO){
                     dist = Math.round(visit.getLocation().distanceTo(visit.getDetective().getWorkOffice(), visit)*100.0)/100.0;
+                  //  time = visit.getLocation().timeTo()
                 }
+                else{
+                    dist = 0.0;
+                }
+
+
 
                 LOGGER.info("     " + visit.getName() + " "
                         + visit.getVisitType() + "(" + visit.getExpMonths() +")" + "  dist:"+ dist +
-                        "  photoTime:"+visit.getPhotoTime());
+                        "  photoTime:"+visit.getPhotoTime() +
+                        "  arrTime: "+formatTime(visit.getArrivalTime()) +
+                        "  depTime: "+formatTime(visit.getDepartureTime()));
 
             });
         });
@@ -131,6 +141,7 @@ public class DetectiveSolution {
         Location detLoc1 = new Location(0.0, 0.0);
         d1.setWorkOffice(detLoc1);
         d1.setCostDistance(0.1);
+        d1.setCostWorkTime(10.0);
 
         // Detective 2
         Detective d2 = new Detective();
@@ -143,6 +154,10 @@ public class DetectiveSolution {
         d2.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
         d2.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
         d2.setMaxGroupCount(2);
+
+        d2.setHasCar(true);
+        d2.setCostWorkTime(100.0);
+
 
         // Detective 3
         Detective d3 = new Detective();
@@ -157,6 +172,9 @@ public class DetectiveSolution {
         Location detLoc2 = new Location(6.0, 6.0);
         d3.setWorkOffice(detLoc2);
         d3.setCostDistance(0.1);
+
+        d3.setHasCar(true);
+        d3.setCostWorkTime(1000.0);
 
         // ThiefGroup 1
         Visit t1 = new Visit();
@@ -363,5 +381,15 @@ public class DetectiveSolution {
 
         d1.getDetectives().addAll(List.of(d1));
         return problem;
+    }
+
+    public static String formatTime(Integer timeInSeconds) {
+        if (timeInSeconds != null) {
+            long HH = timeInSeconds / 3600;
+            long MM = (timeInSeconds % 3600) / 60;
+            long SS = timeInSeconds % 60;
+            return String.format("%02d:%02d:%02d", HH, MM, SS);
+        } else return "null";
+
     }
 }

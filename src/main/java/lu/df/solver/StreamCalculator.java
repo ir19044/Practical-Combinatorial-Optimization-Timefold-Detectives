@@ -25,7 +25,9 @@ public class StreamCalculator implements ConstraintProvider {
                 oneGroupOneProtocol(constraintFactory),
                 detectiveThiefGroupLevelMatch(constraintFactory),
                 //groupMinimalCover(constraintFactory)
-                photoTime(constraintFactory)
+                photoTime(constraintFactory),
+                arrivalTime(constraintFactory),
+                worktimeCost(constraintFactory)
         };
     }
 
@@ -85,5 +87,27 @@ public class StreamCalculator implements ConstraintProvider {
                 .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO && visit.getPhotoTime() != null)
                 .penalize(HardSoftScore.ONE_SOFT, visit -> visit.getPhotoTime())
                 .asConstraint("photoTime");
+    }
+
+    public Constraint arrivalTime(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO && visit.getArrivalTime() != null)
+                .penalize(HardSoftScore.ONE_SOFT, visit -> visit.getArrivalTime())
+                .asConstraint("arrivalTime");
+    }
+
+    public Constraint worktimeCost(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Detective.class)
+                .filter(detective -> !detective.getVisits().isEmpty())
+                .join(Visit.class, Joiners.equal(d->d, Visit::getDetective))
+                .filter((detective, last) -> last.getNext() == null)
+                .penalize(HardSoftScore.ONE_SOFT, (detective, last) ->
+                {
+                    return (int) Math.round((last.getDepartureTime()) / 3600.0 * detective.getCostWorkTime() * 100);
+                })
+                .asConstraint("worktimeCost");
+
     }
 }

@@ -21,8 +21,7 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
         if (visit.getDetective() == null) {
 
             scoreDirector.beforeVariableChanged(visit, "coveredSet");
-            if (visit.getVisitType() == Visit.VisitType.PHOTO) visit.setCoveredSet(visit.getThiefSet());
-            else visit.setCoveredSet(new HashSet<>());
+            visit.setCoveredSet(new HashSet<>());
             scoreDirector.afterVariableChanged(visit, "coveredSet");
 
             scoreDirector.beforeVariableChanged(visit, "photoTime");
@@ -43,10 +42,20 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
                     ? new HashSet<>(visit.getPrev().getCoveredSet())
                     : new HashSet<>();
 
+/*
+            if(visit.getPrev()!=null &&
+                    visit.getDetective().getDetectives().get(2).getVisits().stream().filter(v -> v.getName() == "ThiefGroup-4"
+            || v.getName() == "Office2-#1").count() >= 1 && visit.getThiefSet()!=null && visit.getThiefSet().size() == 2 &&
+            visit.getPrev().getVisitType() == Visit.VisitType.PROTOCOL && visit.getName() == "ThiefGroup-3"
+            && visit.getPrev().getName().equals("Office2-#1")){
+                var a = 2;
+            }
+*/
+
             Integer arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
                     ? visit.getPrev().getDepartureTime() +
                             visit.getPrev().getLocation().timeTo(visit.getLocation(), visit.getDetective(), visit)
-                    : 0;
+                    : visit.getDetective().getWorkOffice().timeTo(visit.getLocation(), visit.getDetective(), visit); // start in office
 
             Visit shadowVisit = visit;
             while (shadowVisit != null) {
@@ -63,22 +72,19 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
 
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "photoTime");
-              //  if(shadowVisit.getVisitType() == Visit.VisitType.PROTOCOL &&
-               //         shadowVisit.getPrev() != null && shadowVisit.getPrev().getVisitType() == Visit.VisitType.PHOTO
 
                 if(shadowVisit.getThiefSet() != null && shadowVisit.getThiefSet().size() == 2){
                     var a = 2;
                 }
 
 
-                if(shadowVisit.getVisitType() == Visit.VisitType.PHOTO && shadowVisit.getDetective().isGivenSetAlreadyCoveredByAnotherSets(shadowVisit)){
+                if(shadowVisit.getVisitType() == Visit.VisitType.PHOTO && shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit)){
                     var a = 2;
                 }
 
-                // TODO:  (shadowVisit.getPrev()!=null && shadowVisit.getPrev().getCoveredSet().containsAll(shadowVisit.getThiefSet())
                 if(shadowVisit.getVisitType() == Visit.VisitType.PROTOCOL ||
                         shadowVisit.getDetective() == null ||
-                        shadowVisit.getDetective().isGivenSetAlreadyCoveredByAnotherSets(shadowVisit))
+                        shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit))
                 {
                     shadowVisit.setPhotoTime(0);
                 }
@@ -87,14 +93,21 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
 
                 scoreDirector.afterVariableChanged(shadowVisit, "photoTime");
 
+                scoreDirector.beforeVariableChanged(shadowVisit, "arrivalTime");
+                shadowVisit.setArrivalTime(arrival);
+                scoreDirector.afterVariableChanged(shadowVisit, "arrivalTime");
+
 
                 coveredSet = thiefSetAllUpdated;
                 shadowVisit = shadowVisit.getNext();
+
+                if (shadowVisit != null) {
+                    arrival = shadowVisit.getPrev().getDepartureTime() +
+                            shadowVisit.getPrev().getLocation().timeTo(shadowVisit.getLocation(), shadowVisit.getDetective(), shadowVisit);
+                }
             }
 
             var a = 2;
-
-
         }
     }
 

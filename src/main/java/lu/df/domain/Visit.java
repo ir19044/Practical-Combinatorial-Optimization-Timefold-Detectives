@@ -80,10 +80,9 @@ public class Visit {
     private Integer arrivalTime = null;
 
     public Integer getDepartureTime() {
-        return this.getArrivalTime() != null ?
-                //Math.max(this.getArrivalTime(), this.getTwStart()) + this.getSrvTime() :
-                0:
-                null;
+        return this.getArrivalTime() != null
+                ? this.getArrivalTime() + this.getPhotoTime()
+                : null;
     }
 
     @Override
