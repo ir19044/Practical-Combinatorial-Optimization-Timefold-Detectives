@@ -22,10 +22,13 @@ public class Main {
     public static void main(String[] args) {
         // 1. Step - Define problem
 
-        DetectiveSolution problem = DetectiveSolution.generateData();
+        DetectiveSolution problem = DetectiveSolution.generateData(20);
         problem.print();
 
         // 2. Step - Define SolverFactory
+
+        SolverFactory<DetectiveSolution> solverFactoryFromXML = SolverFactory
+                .createFromXmlResource("SolverConfig.xml");
 
         SolverFactory<DetectiveSolution> solverFactory = SolverFactory.create(
                 new SolverConfig()
@@ -34,12 +37,13 @@ public class Main {
                         .withConstraintProviderClass(StreamCalculator.class)
                         .withTerminationConfig(new TerminationConfig()
                                 .withSecondsSpentLimit(10L)) // 10 seconds for work
-                        .withEnvironmentMode(EnvironmentMode.FULL_ASSERT)
+                        .withEnvironmentMode(EnvironmentMode.REPRODUCIBLE)
         );
 
         // 3. Step - Solve
 
-        Solver<DetectiveSolution> solver = solverFactory.buildSolver();
+        //Solver<DetectiveSolution> solver = solverFactory.buildSolver();
+        Solver<DetectiveSolution> solver = solverFactoryFromXML.buildSolver();
         DetectiveSolution solution = solver.solve(problem);
 
         // 4. Step - Explain and print

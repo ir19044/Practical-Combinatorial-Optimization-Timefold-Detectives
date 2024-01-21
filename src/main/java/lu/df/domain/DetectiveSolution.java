@@ -11,13 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 import lu.df.domain.Visit.Thief;
+import static lu.df.domain.Visit.VisitType.PHOTO;
+import static lu.df.domain.Visit.VisitType.PROTOCOL;
 
 
 @PlanningSolution
@@ -49,6 +46,16 @@ public class DetectiveSolution {
             LOGGER.info(detective.getEmpNr() + "(lvl: " + detective.getExperienceMonths() + ")");
             detective.getVisits().forEach(visit -> {
 
+                StringBuilder thieveList = new StringBuilder();
+                if(visit.getVisitType() == PHOTO) {
+                    List<Thief> thievesList = new ArrayList<>(visit.getThiefSet());
+                    thievesList.sort(Comparator.comparingInt(Thief::getId));
+
+                    for (Thief thief : thievesList) {
+                        thieveList.append(thief.getId()).append(", ");
+                    }
+                }
+
                 LOGGER.info("     " + visit.getName() + " "
                         + visit.getVisitType() + "(" + visit.getExpMonths() +")" + "  dist:"+ visit.getDistanceToVisit() +
                         "  photoTime:"+visit.getPhotoTime() +
@@ -56,9 +63,113 @@ public class DetectiveSolution {
                         "  depTime: "+formatTime(visit.getDepartureTime()) +
                         "    GroupTimeWindow:  "+formatTime(visit.getTwStart())+"-->"+formatTime(visit.getTwFinish()) +
                         "    DetTimeWindow:  "+formatTime(visit.getDetective().getTwStart())+"-->"+formatTime(visit.getDetective().getTwFinish())+
-                        "    Caught:  "+visit.getCatchGroupCount());
+                        "    Caught:  "+visit.getCatchGroupCount()+
+                        "    Set:  {"+thieveList+"}");
             });
         });
+    }
+
+
+    private static int problemId = 0;
+    private static Integer getProblemId() { problemId++; return problemId;}
+
+    public static DetectiveSolution generateData(int scale){ // scale number of thieve groups
+
+        // 1. Step - Define problem
+
+        DetectiveSolution problem = new DetectiveSolution();
+        problem.setSolutionId(DetectiveSolution.getProblemId().toString());
+
+        Random random = new Random();
+
+        // 2. Step - Offices
+
+        List<Location> officeLocations = new ArrayList<>();
+
+        for (int i = 1; i <= 3 * scale / 100 + 1; i++) {
+            Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+
+            for (int j = 1; j <= 3 + scale ; j++) {
+                Visit ofc = new Visit();
+
+                ofc.setName("Office"+i+"-#"+j);
+                ofc.setExpMonths(0); // redundant, default value
+                ofc.setVisitType(PROTOCOL);
+
+                ofc.setTwStart(TIME0AM);
+                ofc.setTwFinish(DAY);
+
+                ofc.setLocation(ofcLoc);
+                officeLocations.add(ofcLoc);
+
+                problem.getLocationList().add(ofcLoc);
+                problem.getVisitList().add(ofc);
+            }
+        }
+
+        // 3. Step - Detectives
+
+        List<Detective> detectives = new ArrayList<>();
+
+        for (int i = 1; i <= scale / 5 + 1; i++){
+            Detective d = new Detective();
+            detectives.add(d);
+
+            d.setEmpNr("Detective-"+i);
+            d.setExperienceMonths(10+random.nextInt(20));
+
+            int startHour = random.nextInt(12);
+            int endHour = 12 + random.nextInt(9);
+
+            d.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
+            d.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
+            d.setMaxGroupCount(random.nextInt(8));
+
+            d.setHasCar(random.nextBoolean());
+
+            int randomIndex = random.nextInt(officeLocations.size());
+            Location ofc = officeLocations.get(randomIndex);
+            Location detLoc = new Location(ofc.getLat(), ofc.getLon());
+            d.setWorkOffice(detLoc);
+            d.setCostDistance(random.nextDouble(10));
+            d.setCostWorkTime(random.nextDouble(12));
+
+            problem.getDetectiveList().add(d);
+            problem.getLocationList().add(detLoc);
+        }
+
+        for(Detective d: detectives) d.getDetectives().addAll(detectives);
+
+        // 4. Step - Thieve groups
+
+        for( int i = 1; i <= scale; i++){
+            Visit t = new Visit();
+            t.setName("ThiefGroup-"+i);
+            t.setExpMonths(random.nextInt(12));
+
+            Set<Thief> thieves = new HashSet<>();
+            int thieveCount = 1+2*(random.nextInt(scale))/3;
+            for (int j = 1; j <= thieveCount; j++) {
+                var th = random.nextInt(scale);
+                thieves.add(new Thief(th, "Thief" + th));
+            }
+            t.setThiefSet(thieves);
+
+            t.setVisitType(PHOTO); // default
+            int startHour = random.nextInt(12);
+            int endHour = 1 + startHour + random.nextInt(9);
+
+            t.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
+            t.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
+
+            Location tLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+            t.setLocation(tLoc);
+
+            problem.getLocationList().add(tLoc);
+            problem.getVisitList().add(t);
+        }
+
+        return problem;
     }
 
     public static DetectiveSolution generateData(){
@@ -213,16 +324,6 @@ public class DetectiveSolution {
 
         Location t4Loc = new Location(6.0, 2.0);
         t4.setLocation(t4Loc);
-
-        // max thief set size
-        Set<Thief> maximalSet = new HashSet<>(){{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
-            add(new Visit.Thief(4, "Thief4"));
-            add(new Visit.Thief(5, "Thief5"));
-            add(new Visit.Thief(6, "Thief6"));
-        }};
 
         // Fill detective, office and visits lists
 
