@@ -11,7 +11,6 @@ import ai.timefold.solver.core.config.solver.termination.TerminationConfig;
 import lu.df.domain.Detective;
 import lu.df.domain.DetectiveSolution;
 import lu.df.domain.Visit;
-import lu.df.solver.ScoreCalculator;
 import lu.df.solver.StreamCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

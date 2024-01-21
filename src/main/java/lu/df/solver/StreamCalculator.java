@@ -8,9 +8,9 @@ import lu.df.domain.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Objects;
-
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
-import static java.util.Collections.max;
+import static lu.df.domain.Visit.VisitType.PHOTO;
+
 
 public class StreamCalculator implements ConstraintProvider {
 
@@ -22,17 +22,19 @@ public class StreamCalculator implements ConstraintProvider {
                 totalDistance(constraintFactory),
                 oneGroupOneProtocol(constraintFactory),
                 detectiveThiefGroupLevelMatch(constraintFactory),
-                //groupMinimalCover(constraintFactory)
-                photoTime(constraintFactory),
-                arrivalTime(constraintFactory),
+                //photoTime(constraintFactory),
+                //arrivalTime(constraintFactory),
                 worktimeCost(constraintFactory),
                 visitOutsideTwFinish(constraintFactory),
                 visitOutsideTwStart(constraintFactory),
                 worktimeOverFlow(constraintFactory),
-                worktimeGroupCountOverflow(constraintFactory)
+                worktimeGroupCountOverflow(constraintFactory),
+                workCarDistanceCost(constraintFactory)
         };
     }
 
+    // NB! Distance from current to ALREADY COVERED set == 0
+    // MinSetCover functionality
     public Constraint totalDistance(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Detective.class)
@@ -42,10 +44,11 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("totalDistance");
     }
 
+    // After each PHOTO => PROTOCOL
     public Constraint oneGroupOneProtocol(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO)
+                .filter(visit -> visit.getVisitType() == PHOTO)
                 .join(Detective.class, equal(Visit::getDetective, v -> v))
                 .penalize(HardSoftScore.ONE_HARD, (visit, detective) ->
                         visit.getNext() == null ||
@@ -55,6 +58,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("oneGroupOneProtocol");
     }
 
+    // LVL(Detective) >= LVL(ThiefGroup)
     public Constraint detectiveThiefGroupLevelMatch(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
@@ -67,19 +71,20 @@ public class StreamCalculator implements ConstraintProvider {
     public Constraint photoTime(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO && visit.getPhotoTime() != null)
-                .penalize(HardSoftScore.ONE_SOFT, visit -> visit.getPhotoTime())
+                .filter(visit -> visit.getVisitType() == PHOTO && visit.getPhotoTime() != null)
+                .penalize(HardSoftScore.ONE_SOFT, Visit::getPhotoTime)
                 .asConstraint("photoTime");
     }
 
     public Constraint arrivalTime(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getVisitType() == Visit.VisitType.PHOTO && visit.getArrivalTime() != null)
-                .penalize(HardSoftScore.ONE_SOFT, visit -> visit.getArrivalTime())
+                .filter(visit -> visit.getVisitType() == PHOTO && visit.getArrivalTime() != null)
+                .penalize(HardSoftScore.ONE_SOFT, Visit::getArrivalTime)
                 .asConstraint("arrivalTime");
     }
 
+    // Cost for detective time
     public Constraint worktimeCost(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Detective.class)
@@ -88,11 +93,26 @@ public class StreamCalculator implements ConstraintProvider {
                 .filter((detective, last) -> last.getNext() == null)
                 .penalize(HardSoftScore.ONE_SOFT, (detective, last) ->
                 {
-                    return (int) Math.round((last.getDepartureTime()) / 3600.0 * detective.getCostWorkTime() * 100);
+                    return (int) Math.round((last.getDepartureTime()) / 3600.0 * detective.getCostWorkTime() * 10);
                 })
                 .asConstraint("worktimeCost");
     }
 
+    // Cost for detective car
+    public Constraint workCarDistanceCost(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Detective.class)
+                .filter(detective -> detective.getHasCar() && !detective.getVisits().isEmpty())
+                .join(Visit.class, Joiners.equal(d->d, Visit::getDetective))
+                .filter((detective, last) -> last.getNext() == null)
+                .penalize(HardSoftScore.ONE_SOFT, (d, last) ->
+                {
+                    return (int) Math.round(last.getDistanceToVisit() * d.getCostDistance());
+                })
+                .asConstraint("workCarDistanceCost");
+    }
+
+    // Try to avoid: TIME END (GROUP CATCH) < TIME END (GROUP)
     public Constraint visitOutsideTwFinish(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
@@ -101,7 +121,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("visitOutsideTwFinish");
     }
 
-    // TODO
+    // Try to avoid: TIME START (GROUP CATCH) < TIME START (GROUP)
     public Constraint visitOutsideTwStart(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
@@ -110,6 +130,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("visitOutsideTwStart");
     }
 
+    // Try to avoid: TIME END (DETECTIVE) < TIME END (GROUP CATCH)
     public Constraint worktimeOverFlow(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Detective.class)
@@ -121,6 +142,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .asConstraint("worktimeOverflow");
     }
 
+    // Try to avoid: MAX (GROUP CATCH) < CAUGHT GROUPS
     public Constraint worktimeGroupCountOverflow(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Detective.class)

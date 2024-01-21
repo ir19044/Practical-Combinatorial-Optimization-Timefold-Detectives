@@ -32,11 +32,14 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             visit.setArrivalTime(null);
             scoreDirector.afterVariableChanged(visit, "arrivalTime");
 
-            if(visit.getDetective() != null) {
-                scoreDirector.beforeVariableChanged(visit,"catchGroupCount");
-                visit.setCatchGroupCount(0);
-                scoreDirector.afterVariableChanged(visit,"catchGroupCount");
-            }
+            scoreDirector.beforeVariableChanged(visit,"catchGroupCount");
+            visit.setCatchGroupCount(0);
+            scoreDirector.afterVariableChanged(visit,"catchGroupCount");
+
+            scoreDirector.beforeVariableChanged(visit,"distanceToVisit");
+            visit.setDistanceToVisit(null);
+            scoreDirector.afterVariableChanged(visit,"distanceToVisit");
+
         } else {
             Set<Thief> coveredSet = visit.getPrev() != null
                     ? new HashSet<>(visit.getPrev().getCoveredSet())
@@ -52,13 +55,20 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             }
 */
 
+
+            int detectiveStartTime = visit.getDetective().getTwStart();
+            int timeToDrive = visit.getDetective().getWorkOffice().timeTo(visit);
+
+
             Integer arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
                     ? visit.getPrev().getDepartureTime() +
-                            visit.getPrev().getLocation().timeTo(visit.getLocation(), visit.getDetective(), visit)
-                    : visit.getDetective().getTwStart() +
-                    visit.getDetective().getWorkOffice().timeTo(visit.getLocation(), visit.getDetective(), visit); // start in office
+                            visit.getPrev().getLocation().timeTo(visit)
+                    :  Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
+
 
             Integer catchGroupCount = visit.getPrev() != null ? visit.getPrev().getCatchGroupCount() : 0;
+
+            Integer distanceToVisit = visit.getPrev() != null ? visit.getPrev().getDistanceToVisit() : 0;
 
             Visit shadowVisit = visit;
             while (shadowVisit != null) {
@@ -109,12 +119,30 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
                 scoreDirector.afterVariableChanged(shadowVisit, "catchGroupCount");
 
 
+                scoreDirector.beforeVariableChanged(shadowVisit, "distanceToVisit");
+
+                if(shadowVisit.getPrev() != null) {
+                    distanceToVisit += (int) Math.round (shadowVisit.getPrev().getLocation().distanceTo(shadowVisit.getLocation(), shadowVisit));
+                }
+                else if ( shadowVisit.getVisitType() == Visit.VisitType.PHOTO) {
+                    distanceToVisit += (int) Math.round(shadowVisit.getLocation().distanceTo(shadowVisit.getDetective().getWorkOffice(), shadowVisit));
+                }
+
+                shadowVisit.setDistanceToVisit(distanceToVisit);
+                scoreDirector.afterVariableChanged(shadowVisit, "distanceToVisit");
+
                 coveredSet = thiefSetAllUpdated;
                 shadowVisit = shadowVisit.getNext();
 
                 if (shadowVisit != null) {
+
+                    if(shadowVisit.getName().equals("ThiefGroup-2")){
+                        var a = 2;
+                    }
+
+
                     arrival = shadowVisit.getPrev().getDepartureTime() +
-                            shadowVisit.getPrev().getLocation().timeTo(shadowVisit.getLocation(), shadowVisit.getDetective(), shadowVisit);
+                            shadowVisit.getPrev().getLocation().timeTo(shadowVisit);
                 }
             }
 

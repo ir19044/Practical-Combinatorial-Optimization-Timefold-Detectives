@@ -1,12 +1,10 @@
 package lu.df.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
-import ai.timefold.solver.core.api.domain.variable.PiggybackShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lu.df.domain.DetectiveSolution.WeekDay;
 import lu.df.domain.Visit.Thief;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,30 +15,28 @@ import java.util.Set;
 @Getter @Setter @NoArgsConstructor
 public class Detective {
 
-    private String empNr;
+    private String empNr; // Employee name
 
-    private Integer experienceMonths;
+    private Integer experienceMonths; // Months of exp. More exp. => Less time to take a photo
 
-    private Location workOffice;
+    private Location workOffice; // Office location
 
     private List<Detective> detectives = new ArrayList<>();
 
     @PlanningListVariable // CHANGEABLE
     private List<Visit> visits = new ArrayList<>();
 
-    private Integer twStart; // Time to start work (foreach work day)
+    private Integer twStart; // Time to start work
 
-    private Integer twFinish; // Time to finish work (foreach work day)
-
-    private List<WeekDay> workDays;
+    private Integer twFinish; // Time to finish work
 
     private Integer maxGroupCount; // Max group count to catch per week
 
-    private Boolean hasCar; // movement type - by car or another
+    private Boolean hasCar; // movement type - by car or another. The first one => Less time to visit group
 
-    private Double costDistance;
+    private Double costDistance; // car cost
 
-    private Double costWorkTime;
+    private Double costWorkTime; // detective cost
 
 
     public Double getTotalDistance(){
@@ -60,6 +56,7 @@ public class Detective {
         return totalDistance;
     }
 
+    // NB! Return true <=> union of all sets for all detectives contains visit.getThiefSet()
     public final boolean isGivenSetCoveredByAnotherSets(Visit visit){
 
         Set<Thief> thiefSet = visit.getThiefSet();

@@ -82,10 +82,23 @@ public class Visit {
     @PiggybackShadowVariable(shadowVariableName = "coveredSet")
     private Integer catchGroupCount;
 
+    @PiggybackShadowVariable(shadowVariableName = "coveredSet")
+    private Integer distanceToVisit;
+
     public Integer getDepartureTime() {
-        return this.getArrivalTime() != null
-                ? this.getArrivalTime() + this.getPhotoTime()
-                : null;
+        if(this.getArrivalTime() == null)
+            return null;
+        else {
+            int timeWithPhoto = this.getArrivalTime() + this.getPhotoTime();
+
+            if(this.getTwStart() > timeWithPhoto){
+                var a =2;
+            }
+
+            return this.getNext() != null
+                    ? Math.max(this.getNext().getTwStart()- this.getLocation().timeTo(this.getNext()), timeWithPhoto)
+                    : timeWithPhoto;
+        }
     }
 
     @Override
