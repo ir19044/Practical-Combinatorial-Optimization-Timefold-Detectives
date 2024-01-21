@@ -90,11 +90,6 @@ public class Detective {
             coveredByAll.addAll(coveredByDetective);
         }
 
-       // for(Detective detective: this.getDetectives()){
-        //    Set<Thief> coveredByDetective = this.getCovered(detective, visit);
-       //     coveredByAll.addAll(coveredByDetective);
-       // }
-
         return coveredByAll.containsAll(thiefSet);
     }
 
