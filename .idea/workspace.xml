@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Now can work with BenchamarkerRunner &amp; BenchmarkConfig">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added SpringBoot service to solve problems.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/BenchmarkerRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/BenchmarkerRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/SolverConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SolverConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/rest/DetectiveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/rest/DetectiveController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +165,7 @@
       <updated>1705519684148</updated>
       <workItem from="1705519685350" duration="17777000" />
       <workItem from="1705607807175" duration="11634000" />
-      <workItem from="1705670380693" duration="125751000" />
+      <workItem from="1705670380693" duration="131440000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -280,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705866656512</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added SpringBoot service to solve problems.">
+      <option name="closed" value="true" />
+      <created>1705872670224</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1705872670224</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +308,8 @@
     <MESSAGE value="Added data generation method. Added Solver config file xml." />
     <MESSAGE value="Added Benchmarker runner &amp; configuration." />
     <MESSAGE value="Now can work with BenchamarkerRunner &amp; BenchmarkConfig" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now can work with BenchamarkerRunner &amp; BenchmarkConfig" />
+    <MESSAGE value="Added SpringBoot service to solve problems." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added SpringBoot service to solve problems." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

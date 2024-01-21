@@ -1,14 +1,19 @@
 package lu.df.rest;
 
+import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import ai.timefold.solver.core.api.score.constraint.Indictment;
 import ai.timefold.solver.core.api.solver.SolutionManager;
 import ai.timefold.solver.core.api.solver.SolverManager;
 import lu.df.domain.DetectiveSolution;
+import lu.df.solver.SimpleIndictmentObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/routes")
@@ -31,6 +36,29 @@ public class DetectiveController {
     @GetMapping("/solution")
     public DetectiveSolution solution(@RequestParam String id){
         return solutionMap.get(id);
+    }
+
+    @GetMapping("/list")
+    public List<DetectiveSolution> list(){
+        return solutionMap.values().stream().toList();
+    }
+
+    @GetMapping("/score")
+    public ScoreAnalysis<HardSoftScore> score(@RequestParam String id){
+        return solutionManager.analyze(solutionMap.get(id));
+    }
+
+    @GetMapping("/indictments")
+    public List<SimpleIndictmentObject> indictments(@RequestParam String id) {
+        return solutionManager.explain(solutionMap.getOrDefault(id, null)).getIndictmentMap().entrySet().stream()
+                .map(entry -> {
+                    Indictment<HardSoftScore> indictment = entry.getValue();
+                    return
+                            new SimpleIndictmentObject(entry.getKey(), // indicted Object
+                                    indictment.getScore(),
+                                    indictment.getConstraintMatchCount(),
+                                    indictment.getConstraintMatchSet());
+                }).collect(Collectors.toList());
     }
 
 }

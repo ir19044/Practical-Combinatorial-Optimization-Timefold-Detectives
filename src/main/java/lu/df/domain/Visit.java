@@ -43,11 +43,11 @@ public class Visit {
     private Detective detective;
 
     @NextElementShadowVariable(sourceVariableName = "visits")
-    @JsonIdentityReference
+    @JsonIdentityReference(alwaysAsId = true)
     private Visit next;
 
     @PreviousElementShadowVariable(sourceVariableName = "visits")
-    @JsonIdentityReference
+    @JsonIdentityReference(alwaysAsId = true)
     private Visit prev;
 
     // If at least one changed, then recalculate thiefList
