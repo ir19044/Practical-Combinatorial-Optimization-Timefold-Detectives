@@ -33,9 +33,9 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             scoreDirector.afterVariableChanged(visit, "arrivalTime");
 
             if(visit.getDetective() != null) {
-                scoreDirector.beforeVariableChanged(visit.getDetective().getClass(), "catchGroupCount");
-                visit.getDetective().setCatchGroupCount(0);
-                scoreDirector.afterVariableChanged(visit.getDetective().getClass(), "catchGroupCount");
+                scoreDirector.beforeVariableChanged(visit,"catchGroupCount");
+                visit.setCatchGroupCount(0);
+                scoreDirector.afterVariableChanged(visit,"catchGroupCount");
             }
         } else {
             Set<Thief> coveredSet = visit.getPrev() != null
@@ -55,7 +55,10 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             Integer arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
                     ? visit.getPrev().getDepartureTime() +
                             visit.getPrev().getLocation().timeTo(visit.getLocation(), visit.getDetective(), visit)
-                    : visit.getDetective().getWorkOffice().timeTo(visit.getLocation(), visit.getDetective(), visit); // start in office
+                    : visit.getDetective().getTwStart() +
+                    visit.getDetective().getWorkOffice().timeTo(visit.getLocation(), visit.getDetective(), visit); // start in office
+
+            Integer catchGroupCount = visit.getPrev() != null ? visit.getPrev().getCatchGroupCount() : 0;
 
             Visit shadowVisit = visit;
             while (shadowVisit != null) {
@@ -96,6 +99,14 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
                 scoreDirector.beforeVariableChanged(shadowVisit, "arrivalTime");
                 shadowVisit.setArrivalTime(arrival);
                 scoreDirector.afterVariableChanged(shadowVisit, "arrivalTime");
+
+
+                scoreDirector.beforeVariableChanged(shadowVisit, "catchGroupCount");
+                if( shadowVisit.getVisitType() == Visit.VisitType.PHOTO &&
+                        !shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit))
+                    catchGroupCount += 1;
+                shadowVisit.setCatchGroupCount(catchGroupCount);
+                scoreDirector.afterVariableChanged(shadowVisit, "catchGroupCount");
 
 
                 coveredSet = thiefSetAllUpdated;

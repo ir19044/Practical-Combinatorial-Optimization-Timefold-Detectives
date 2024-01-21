@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="MinSetCover functionality now process with all detectives. Added photoTime constraint.">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added arrivalTime, depTime calculation + worktimeCost constraint">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Detective.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/Visit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java" afterDir="false" />
@@ -156,7 +154,7 @@
       <updated>1705519684148</updated>
       <workItem from="1705519685350" duration="17777000" />
       <workItem from="1705607807175" duration="11634000" />
-      <workItem from="1705670380693" duration="78591000" />
+      <workItem from="1705670380693" duration="83073000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -214,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705785665048</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added arrivalTime, depTime calculation + worktimeCost constraint">
+      <option name="closed" value="true" />
+      <created>1705793876437</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705793876437</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +234,8 @@
     <MESSAGE value="Added detectiveThiefGroupLevelMatch soft constraint. Cannot visit thief group if its lvl. &gt; detective experience lvl." />
     <MESSAGE value="Now work in FULL ASSERT mode. Added MinSetCover functionality (smart distance function) + VariableListener" />
     <MESSAGE value="MinSetCover functionality now process with all detectives. Added photoTime constraint." />
-    <option name="LAST_COMMIT_MESSAGE" value="MinSetCover functionality now process with all detectives. Added photoTime constraint." />
+    <MESSAGE value="Added arrivalTime, depTime calculation + worktimeCost constraint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added arrivalTime, depTime calculation + worktimeCost constraint" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -240,7 +247,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java</url>
-          <line>109</line>
+          <line>119</line>
           <option name="timeStamp" value="303" />
         </line-breakpoint>
       </breakpoints>

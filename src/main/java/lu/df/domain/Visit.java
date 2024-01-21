@@ -79,6 +79,9 @@ public class Visit {
     @PiggybackShadowVariable(shadowVariableName = "coveredSet") // depends on planning
     private Integer arrivalTime = null;
 
+    @PiggybackShadowVariable(shadowVariableName = "coveredSet")
+    private Integer catchGroupCount;
+
     public Integer getDepartureTime() {
         return this.getArrivalTime() != null
                 ? this.getArrivalTime() + this.getPhotoTime()

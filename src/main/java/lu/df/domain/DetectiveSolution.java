@@ -76,12 +76,13 @@ public class DetectiveSolution {
                 }
 
 
-
                 LOGGER.info("     " + visit.getName() + " "
                         + visit.getVisitType() + "(" + visit.getExpMonths() +")" + "  dist:"+ dist +
                         "  photoTime:"+visit.getPhotoTime() +
                         "  arrTime: "+formatTime(visit.getArrivalTime()) +
-                        "  depTime: "+formatTime(visit.getDepartureTime()));
+                        "  depTime: "+formatTime(visit.getDepartureTime()) +
+                        "    TimeWindow:  "+formatTime(visit.getTwStart())+"-->"+formatTime(visit.getTwFinish()) +
+                        "    Caught:  "+visit.getCatchGroupCount());
 
             });
         });
@@ -134,7 +135,7 @@ public class DetectiveSolution {
         d1.setTwStart(8 * HOUR); // Time to start work (foreach work day)
         d1.setTwFinish(9 * HOUR); // Time to finish work (foreach work day)
         d1.setWorkDays(new ArrayList<>(List.of(WeekDay.MONDAY, WeekDay.TUESDAY)));
-        d1.setMaxGroupCount(2);
+        d1.setMaxGroupCount(1);
 
         d1.setHasCar(true);
 
@@ -203,7 +204,7 @@ public class DetectiveSolution {
         }});
 
         t2.setVisitType(Visit.VisitType.PHOTO);
-        t2.setTwStart(getWeekDay(WeekDay.MONDAY)+ 8 * HOUR);
+        t2.setTwStart(getWeekDay(WeekDay.MONDAY)+ 12 * HOUR);
         t2.setTwFinish(getWeekDay(WeekDay.FRIDAY) + 16 * HOUR);
 
         Location t2Loc = new Location(0.0, 2.0);

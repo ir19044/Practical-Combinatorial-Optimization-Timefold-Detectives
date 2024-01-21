@@ -8,11 +8,9 @@ import lu.df.domain.Visit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Objects;
-import java.util.Set;
-import lu.df.domain.Visit.Thief;
+
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
 import static java.util.Collections.max;
-import static java.util.stream.Collectors.toSet;
 
 public class StreamCalculator implements ConstraintProvider {
 
@@ -27,7 +25,11 @@ public class StreamCalculator implements ConstraintProvider {
                 //groupMinimalCover(constraintFactory)
                 photoTime(constraintFactory),
                 arrivalTime(constraintFactory),
-                worktimeCost(constraintFactory)
+                worktimeCost(constraintFactory),
+                visitOutsideTwFinish(constraintFactory),
+                visitOutsideTwStart(constraintFactory),
+                worktimeOverFlow(constraintFactory),
+                worktimeGroupCountOverflow(constraintFactory)
         };
     }
 
@@ -57,29 +59,10 @@ public class StreamCalculator implements ConstraintProvider {
         return constraintFactory
                 .forEach(Visit.class)
                 .join(Detective.class, equal(Visit::getDetective, v -> v))
-                .penalize(HardSoftScore.ONE_SOFT, (visit, detective) ->
+                .penalize(HardSoftScore.ONE_HARD, (visit, detective) ->
                         Math.max(visit.getExpMonths()-detective.getExperienceMonths(), 0)*10)
                 .asConstraint("detectiveThiefGroupLevelMatch");
     }
-
-    /*
-     Penalize by UNCOVERED set size
-    public Constraint groupMinimalCover(ConstraintFactory constraintFactory){
-        return constraintFactory
-                .forEach(Detective.class)
-                .filter(detective -> !detective.getVisits().isEmpty())
-                .join(Visit.class, Joiners.equal(v->v, Visit::getDetective))
-                .groupBy((detective,visit) ->  visit.getCoveredSett())
-
-                //.groupBy(Visit::getMaximalThiefSet,ConstraintCollectors.max(Visit::getSizeOfCoveredSet))
-                .penalize(HardSoftScore.ONE_SOFT, v -> v.size())
-                .asConstraint("groupMinimalCover");
-
-                //.filter(visit -> ConstraintCollectors.max(Visit::getThiefSetAllSize).equals(visit.getThiefSetAll().size()))
-               // .penalize(HardSoftScore.ONE_SOFT, visit -> visit.g)
-
-    }
-     */
 
     public Constraint photoTime(ConstraintFactory constraintFactory){
         return constraintFactory
@@ -108,6 +91,44 @@ public class StreamCalculator implements ConstraintProvider {
                     return (int) Math.round((last.getDepartureTime()) / 3600.0 * detective.getCostWorkTime() * 100);
                 })
                 .asConstraint("worktimeCost");
+    }
 
+    public Constraint visitOutsideTwFinish(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(visit -> visit.getDepartureTime() != null && visit.getDepartureTime() > visit.getTwFinish())
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("visitOutsideTwFinish");
+    }
+
+    // TODO
+    public Constraint visitOutsideTwStart(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(visit -> visit.getDepartureTime() != null && visit.getArrivalTime() < visit.getTwStart())
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("visitOutsideTwStart");
+    }
+
+    public Constraint worktimeOverFlow(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Detective.class)
+                .filter(detective -> !detective.getVisits().isEmpty())
+                .join(Visit.class, Joiners.equal(d->d, Visit::getDetective))
+                .filter((detective, last) -> last.getNext() == null)
+                .filter(((detective, last) -> last.getDepartureTime() > detective.getTwFinish()))
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("worktimeOverflow");
+    }
+
+    public Constraint worktimeGroupCountOverflow(ConstraintFactory constraintFactory){
+        return constraintFactory
+                .forEach(Detective.class)
+                .filter(detective -> !detective.getVisits().isEmpty())
+                .join(Visit.class, Joiners.equal(d->d, Visit::getDetective))
+                .filter((detective, last) -> last.getNext() == null)
+                .filter(((detective, last) -> detective.getMaxGroupCount() < last.getCatchGroupCount()))
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("worktimeGroupCountOverflow");
     }
 }

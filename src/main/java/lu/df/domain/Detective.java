@@ -38,9 +38,6 @@ public class Detective {
 
     private Boolean hasCar; // movement type - by car or another
 
-    @PiggybackShadowVariable(shadowEntityClass = Visit.class, shadowVariableName = "coveredSet")
-    private Integer catchGroupCount;
-
     private Double costDistance;
 
     private Double costWorkTime;
