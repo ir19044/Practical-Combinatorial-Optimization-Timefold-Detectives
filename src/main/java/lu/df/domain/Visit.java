@@ -46,13 +46,11 @@ public class Visit {
 
     private Integer expMonths; // experience level to catch group
 
-    private VisitType visitType;
+    private VisitType visitType; // PROTOCOL or PHOTO
 
     private Location location;
 
     private Set<Thief> thiefSet;
-
-    private Set<Thief> maximalThiefSet;
 
     @InverseRelationShadowVariable(sourceVariableName = "visits")
     private Detective detective;
@@ -66,7 +64,6 @@ public class Visit {
     // If at least one changed, then recalculate thiefList
     @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "detective")
     @ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "prev")
-    //@ShadowVariable(variableListenerClass = VisitedThiefListener.class, sourceVariableName = "next")
     private Set<Thief> coveredSet = new HashSet<>();
 
     private Integer twStart;  // Time window START to visit this item
@@ -74,7 +71,7 @@ public class Visit {
     private Integer twFinish; // Time window FINISH to visit this item
 
     @PiggybackShadowVariable(shadowVariableName = "coveredSet") // depends on detective lvl and thief group lvl
-    private Integer photoTime; // Time to take a photo
+    private Integer photoTime;
 
     @PiggybackShadowVariable(shadowVariableName = "coveredSet") // depends on planning
     private Integer arrivalTime = null;
@@ -90,11 +87,6 @@ public class Visit {
             return null;
         else {
             int timeWithPhoto = this.getArrivalTime() + this.getPhotoTime();
-
-            if(this.getTwStart() > timeWithPhoto){
-                var a =2;
-            }
-
             return this.getNext() != null
                     ? Math.max(this.getNext().getTwStart()- this.getLocation().timeTo(this.getNext()), timeWithPhoto)
                     : timeWithPhoto;

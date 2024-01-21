@@ -5,9 +5,11 @@ import ai.timefold.solver.core.api.score.director.ScoreDirector;
 import lu.df.domain.DetectiveSolution;
 import lu.df.domain.Visit;
 import lu.df.domain.Visit.Thief;
-
 import java.util.HashSet;
 import java.util.Set;
+import static lu.df.domain.Visit.VisitType.PHOTO;
+import static lu.df.domain.Visit.VisitType.PROTOCOL;
+
 
 public class VisitedThiefListener implements VariableListener<DetectiveSolution, Visit> {
 
@@ -41,112 +43,91 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             scoreDirector.afterVariableChanged(visit,"distanceToVisit");
 
         } else {
+
+            // 1. Step - Init default variable values
+
             Set<Thief> coveredSet = visit.getPrev() != null
                     ? new HashSet<>(visit.getPrev().getCoveredSet())
                     : new HashSet<>();
 
-/*
-            if(visit.getPrev()!=null &&
-                    visit.getDetective().getDetectives().get(2).getVisits().stream().filter(v -> v.getName() == "ThiefGroup-4"
-            || v.getName() == "Office2-#1").count() >= 1 && visit.getThiefSet()!=null && visit.getThiefSet().size() == 2 &&
-            visit.getPrev().getVisitType() == Visit.VisitType.PROTOCOL && visit.getName() == "ThiefGroup-3"
-            && visit.getPrev().getName().equals("Office2-#1")){
-                var a = 2;
-            }
-*/
-
-
             int detectiveStartTime = visit.getDetective().getTwStart();
             int timeToDrive = visit.getDetective().getWorkOffice().timeTo(visit);
+            int catchGroupCount = visit.getPrev() != null ? visit.getPrev().getCatchGroupCount() : 0;
+            int distanceToVisit = visit.getPrev() != null ? visit.getPrev().getDistanceToVisit() : 0;
 
-
-            Integer arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
+            int arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
                     ? visit.getPrev().getDepartureTime() +
                             visit.getPrev().getLocation().timeTo(visit)
                     :  Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
 
-
-            Integer catchGroupCount = visit.getPrev() != null ? visit.getPrev().getCatchGroupCount() : 0;
-
-            Integer distanceToVisit = visit.getPrev() != null ? visit.getPrev().getDistanceToVisit() : 0;
+            // 2. Step - Consequences. Update all data after variable change.
 
             Visit shadowVisit = visit;
             while (shadowVisit != null) {
+
+                boolean isCovered = shadowVisit.getDetective() != null
+                        && shadowVisit.getThiefSet() != null
+                        && shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit);
+
+                // 2.1. Variable: coveredSet
+
                 Set<Thief> thiefSetAllUpdated = new HashSet<>(coveredSet);
 
                 if(shadowVisit.getThiefSet() != null){ // info about BEFORE this found!
-                        thiefSetAllUpdated.addAll(shadowVisit.getThiefSet()); // start set
+                        thiefSetAllUpdated.addAll(shadowVisit.getThiefSet());
                 }
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "coveredSet");
                 shadowVisit.setCoveredSet(thiefSetAllUpdated);
                 scoreDirector.afterVariableChanged(shadowVisit, "coveredSet");
 
-
+                // 2.2. Variable: photoTime
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "photoTime");
-
-                if(shadowVisit.getThiefSet() != null && shadowVisit.getThiefSet().size() == 2){
-                    var a = 2;
-                }
-
-
-                if(shadowVisit.getVisitType() == Visit.VisitType.PHOTO && shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit)){
-                    var a = 2;
-                }
-
-                if(shadowVisit.getVisitType() == Visit.VisitType.PROTOCOL ||
-                        shadowVisit.getDetective() == null ||
-                        shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit))
-                {
+                if(shadowVisit.getVisitType() == PROTOCOL || shadowVisit.getDetective() == null || isCovered) {
                     shadowVisit.setPhotoTime(0);
                 }
                 else
                     shadowVisit.setPhotoTime(185 -5 * shadowVisit.getDetective().getExperienceMonths() + shadowVisit.getExpMonths() / 3);
-
                 scoreDirector.afterVariableChanged(shadowVisit, "photoTime");
+
+                // 2.3. Variable: arrivalTime
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "arrivalTime");
                 shadowVisit.setArrivalTime(arrival);
                 scoreDirector.afterVariableChanged(shadowVisit, "arrivalTime");
 
+                // 2.4. Variable: catchGroupCount
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "catchGroupCount");
-                if( shadowVisit.getVisitType() == Visit.VisitType.PHOTO &&
-                        !shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit))
-                    catchGroupCount += 1;
+                if( shadowVisit.getVisitType() == PHOTO && !isCovered) catchGroupCount += 1;
                 shadowVisit.setCatchGroupCount(catchGroupCount);
                 scoreDirector.afterVariableChanged(shadowVisit, "catchGroupCount");
 
+                // 2.5. Variable: distanceToVisit
 
                 scoreDirector.beforeVariableChanged(shadowVisit, "distanceToVisit");
 
                 if(shadowVisit.getPrev() != null) {
                     distanceToVisit += (int) Math.round (shadowVisit.getPrev().getLocation().distanceTo(shadowVisit.getLocation(), shadowVisit));
                 }
-                else if ( shadowVisit.getVisitType() == Visit.VisitType.PHOTO) {
+                else if ( shadowVisit.getVisitType() == PHOTO) {
                     distanceToVisit += (int) Math.round(shadowVisit.getLocation().distanceTo(shadowVisit.getDetective().getWorkOffice(), shadowVisit));
                 }
 
                 shadowVisit.setDistanceToVisit(distanceToVisit);
                 scoreDirector.afterVariableChanged(shadowVisit, "distanceToVisit");
 
+                // 2.6. Go to next!
+
                 coveredSet = thiefSetAllUpdated;
                 shadowVisit = shadowVisit.getNext();
 
                 if (shadowVisit != null) {
-
-                    if(shadowVisit.getName().equals("ThiefGroup-2")){
-                        var a = 2;
-                    }
-
-
                     arrival = shadowVisit.getPrev().getDepartureTime() +
                             shadowVisit.getPrev().getLocation().timeTo(shadowVisit);
                 }
             }
-
-            var a = 2;
         }
     }
 

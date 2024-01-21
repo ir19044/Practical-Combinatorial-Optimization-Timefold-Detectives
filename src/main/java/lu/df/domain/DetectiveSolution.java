@@ -224,11 +224,6 @@ public class DetectiveSolution {
             add(new Visit.Thief(6, "Thief6"));
         }};
 
-        t1.setMaximalThiefSet(maximalSet);
-        t2.setMaximalThiefSet(maximalSet);
-        t3.setMaximalThiefSet(maximalSet);
-        t4.setMaximalThiefSet(maximalSet);
-
         // Fill detective, office and visits lists
 
         problem.getDetectiveList().addAll(List.of(d1, d2, d3));
@@ -338,10 +333,6 @@ public class DetectiveSolution {
             add(new Visit.Thief(3, "Thief3"));
             add(new Visit.Thief(4, "Thief4"));
         }};
-
-        t1.setMaximalThiefSet(maximalSet);
-        t2.setMaximalThiefSet(maximalSet);
-        t3.setMaximalThiefSet(maximalSet);
 
         // Fill detective, office and visits lists
 
