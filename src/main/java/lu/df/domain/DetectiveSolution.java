@@ -80,7 +80,7 @@ public class DetectiveSolution {
         DetectiveSolution problem = new DetectiveSolution();
         problem.setSolutionId(DetectiveSolution.getProblemId().toString());
 
-        Random random = new Random();
+        Random random = new Random(scale);
 
         // 2. Step - Offices
 

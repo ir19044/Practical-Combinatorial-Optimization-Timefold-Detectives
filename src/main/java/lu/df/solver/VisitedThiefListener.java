@@ -44,10 +44,6 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
 
         } else {
 
-            if(visit.getVisitType() == PHOTO){
-                var a = 2;
-            }
-
             // 1. Step - Init default variable values
 
             Set<Thief> coveredSet = visit.getPrev() != null
@@ -132,7 +128,6 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
                             shadowVisit.getPrev().getLocation().timeTo(shadowVisit);
                 }
             }
-            var a = 2;
         }
     }
 

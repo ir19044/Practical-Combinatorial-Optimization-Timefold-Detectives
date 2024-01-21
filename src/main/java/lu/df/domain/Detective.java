@@ -2,6 +2,7 @@ package lu.df.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Detective {
 
     private Location workOffice; // Office location
 
+    @JsonIgnore
     private List<Detective> detectives = new ArrayList<>();
 
     @PlanningListVariable // CHANGEABLE

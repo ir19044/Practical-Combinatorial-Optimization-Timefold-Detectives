@@ -1,0 +1,321 @@
+{
+  "solutionId" : "P1",
+  "score" : null,
+  "detectiveList" : [ {
+    "empNr" : "Detective-1",
+    "experienceMonths" : 25,
+    "workOffice" : {
+      "lat" : 0.0,
+      "lon" : 0.0
+    },
+    "visits" : [ ],
+    "twStart" : 28800,
+    "twFinish" : 44280,
+    "maxGroupCount" : 1,
+    "hasCar" : true,
+    "costDistance" : 8.9,
+    "costWorkTime" : 11.0,
+    "totalDistance" : 0.0
+  }, {
+    "empNr" : "Detective-2",
+    "experienceMonths" : 21,
+    "workOffice" : {
+      "lat" : 0.0,
+      "lon" : 0.0
+    },
+    "visits" : [ ],
+    "twStart" : 28800,
+    "twFinish" : 82800,
+    "maxGroupCount" : 2,
+    "hasCar" : true,
+    "costDistance" : 4.0,
+    "costWorkTime" : 10.0,
+    "totalDistance" : 0.0
+  }, {
+    "empNr" : "Detective-3",
+    "experienceMonths" : 21,
+    "workOffice" : {
+      "lat" : 6.0,
+      "lon" : 6.0
+    },
+    "visits" : [ ],
+    "twStart" : 64800,
+    "twFinish" : 82800,
+    "maxGroupCount" : 2,
+    "hasCar" : true,
+    "costDistance" : 5.0,
+    "costWorkTime" : 10.0,
+    "totalDistance" : 0.0
+  } ],
+  "visitList" : [ {
+    "name" : "Office1-#1",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 0.0,
+      "lon" : 0.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "Office1-#2",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 0.0,
+      "lon" : 0.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "Office1-#3",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 0.0,
+      "lon" : 0.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "Office2-#1",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 6.0,
+      "lon" : 6.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "Office2-#2",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 6.0,
+      "lon" : 6.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "Office2-#3",
+    "expMonths" : 0,
+    "visitType" : "PROTOCOL",
+    "location" : {
+      "lat" : 6.0,
+      "lon" : 6.0
+    },
+    "thiefSet" : null,
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 0,
+    "twFinish" : 86400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "ThiefGroup-1",
+    "expMonths" : 20,
+    "visitType" : "PHOTO",
+    "location" : {
+      "lat" : 0.0,
+      "lon" : 2.0
+    },
+    "thiefSet" : [ {
+      "id" : 1,
+      "name" : "Thief1"
+    }, {
+      "id" : 2,
+      "name" : "Thief2"
+    }, {
+      "id" : 3,
+      "name" : "Thief3"
+    } ],
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 50400,
+    "twFinish" : 57600,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "ThiefGroup-2",
+    "expMonths" : 25,
+    "visitType" : "PHOTO",
+    "location" : {
+      "lat" : 1.0,
+      "lon" : 5.1
+    },
+    "thiefSet" : [ {
+      "id" : 4,
+      "name" : "Thief4"
+    }, {
+      "id" : 5,
+      "name" : "Thief5"
+    } ],
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 28800,
+    "twFinish" : 32400,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "ThiefGroup-3",
+    "expMonths" : 15,
+    "visitType" : "PHOTO",
+    "location" : {
+      "lat" : 5.0,
+      "lon" : 5.0
+    },
+    "thiefSet" : [ {
+      "id" : 1,
+      "name" : "Thief1"
+    }, {
+      "id" : 6,
+      "name" : "Thief6"
+    } ],
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 75600,
+    "twFinish" : 79200,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  }, {
+    "name" : "ThiefGroup-4",
+    "expMonths" : 21,
+    "visitType" : "PHOTO",
+    "location" : {
+      "lat" : 6.0,
+      "lon" : 2.0
+    },
+    "thiefSet" : [ {
+      "id" : 1,
+      "name" : "Thief1"
+    }, {
+      "id" : 2,
+      "name" : "Thief2"
+    }, {
+      "id" : 3,
+      "name" : "Thief3"
+    }, {
+      "id" : 4,
+      "name" : "Thief4"
+    } ],
+    "detective" : null,
+    "next" : null,
+    "prev" : null,
+    "coveredSet" : [ ],
+    "twStart" : 54000,
+    "twFinish" : 57600,
+    "photoTime" : null,
+    "arrivalTime" : null,
+    "catchGroupCount" : null,
+    "distanceToVisit" : null,
+    "departureTime" : null
+  } ],
+  "locationList" : [ {
+    "lat" : 0.0,
+    "lon" : 0.0
+  }, {
+    "lat" : 0.0,
+    "lon" : 0.0
+  }, {
+    "lat" : 0.0,
+    "lon" : 0.0
+  }, {
+    "lat" : 6.0,
+    "lon" : 6.0
+  }, {
+    "lat" : 6.0,
+    "lon" : 6.0
+  }, {
+    "lat" : 6.0,
+    "lon" : 6.0
+  }, {
+    "lat" : 0.0,
+    "lon" : 2.0
+  }, {
+    "lat" : 1.0,
+    "lon" : 5.1
+  }, {
+    "lat" : 5.0,
+    "lon" : 5.0
+  }, {
+    "lat" : 6.0,
+    "lon" : 2.0
+  }, {
+    "lat" : 0.0,
+    "lon" : 0.0
+  }, {
+    "lat" : 6.0,
+    "lon" : 6.0
+  } ]
+}

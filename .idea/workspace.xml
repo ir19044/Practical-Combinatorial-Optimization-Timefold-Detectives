@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Refactoring for VariableListener">
+    <list default="true" id="630971c7-c67d-4a3e-a14a-a18f6a5c7844" name="Changes" comment="Added data generation method. Added Solver config file xml.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/domain/DetectiveSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/solver/StreamCalculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/SolverConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SolverConfig.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,9 +71,9 @@
       <recent name="D:\Programmesana\Magistrs\I semestris\Praktiska_kombinatoriala_optimizacija\Lielais_praktiskais_darbs\CO_2024_Detectives\src\main\java\lu\df" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="lu.df.Main" />
+  <component name="RunManager" selected="Application.BenchmarkerRunner">
+    <configuration name="BenchmarkerRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lu.df.BenchmarkerRunner" />
       <module name="CO_2024_Detectives" />
       <extension name="coverage">
         <pattern>
@@ -83,7 +85,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConstraintTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lu.df.Main" />
       <module name="CO_2024_Detectives" />
       <extension name="coverage">
         <pattern>
@@ -91,9 +94,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="lu.df" />
-      <option name="MAIN_CLASS_NAME" value="lu.df.ConstraintTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -148,11 +148,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BenchmarkerRunner" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.ConstraintTest.totalDistanceTest_OfficeVisit1Visit2_80" />
         <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_ValidPath_0" />
         <item itemvalue="JUnit.ConstraintTest.oneGroupOneProtocolTest_InvalidPath_1" />
-        <item itemvalue="JUnit.ConstraintTest" />
       </list>
     </recent_temporary>
   </component>
@@ -166,7 +166,7 @@
       <updated>1705519684148</updated>
       <workItem from="1705519685350" duration="17777000" />
       <workItem from="1705607807175" duration="11634000" />
-      <workItem from="1705670380693" duration="106035000" />
+      <workItem from="1705670380693" duration="107303000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -256,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705811680553</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added data generation method. Added Solver config file xml.">
+      <option name="closed" value="true" />
+      <created>1705822429326</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705822429326</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,7 +282,8 @@
     <MESSAGE value="Added visitOutsideTw(Finish,Start), worktimeOverflow, worktimeGroupCount constraints." />
     <MESSAGE value="Added workCarDistanceCost + time functionality for ThiefGroup and Detective time overlaps." />
     <MESSAGE value="Refactoring for VariableListener" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring for VariableListener" />
+    <MESSAGE value="Added data generation method. Added Solver config file xml." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added data generation method. Added Solver config file xml." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -283,16 +292,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/ScoreCalculator.java</url>
           <line>18</line>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java</url>
-          <line>47</line>
-          <option name="timeStamp" value="323" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/lu/df/solver/VisitedThiefListener.java</url>
-          <line>134</line>
-          <option name="timeStamp" value="326" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

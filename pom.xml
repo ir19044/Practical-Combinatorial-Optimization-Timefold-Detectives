@@ -45,6 +45,18 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>ai.timefold.solver</groupId>
+            <artifactId>timefold-solver-benchmark</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ai.timefold.solver</groupId>
+            <artifactId>timefold-solver-jackson</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>
