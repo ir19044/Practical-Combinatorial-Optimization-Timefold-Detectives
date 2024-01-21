@@ -13,8 +13,8 @@ public class Location {
 
     private Double lon;
 
-    private static Integer CAR_SPEED = 20;
-    private static Integer AVG_SPEED = 5;
+    private static Integer CAR_SPEED = 50;
+    private static Integer AVG_SPEED = 20;
 
     public Double distanceTo(Location location, Visit visit){
 

@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
-import lu.df.domain.Visit.Thief;
+import lu.df.domain.Thief;
 import static lu.df.domain.Visit.VisitType.PHOTO;
 import static lu.df.domain.Visit.VisitType.PROTOCOL;
 
@@ -54,6 +54,7 @@ public class DetectiveSolution {
                     for (Thief thief : thievesList) {
                         thieveList.append(thief.getId()).append(", ");
                     }
+                    thieveList.delete(thieveList.length() - 2, thieveList.length());
                 }
 
                 LOGGER.info("     " + visit.getName() + " "
@@ -86,10 +87,10 @@ public class DetectiveSolution {
 
         List<Location> officeLocations = new ArrayList<>();
 
-        for (int i = 1; i <= 3 * scale / 100 + 1; i++) {
+        for (int i = 1; i <= 2; i++) {
             Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
 
-            for (int j = 1; j <= 3 + scale ; j++) {
+            for (int j = 1; j <=2 + 4 * scale / 7 ; j++) {
                 Visit ofc = new Visit();
 
                 ofc.setName("Office"+i+"-#"+j);
@@ -123,7 +124,7 @@ public class DetectiveSolution {
 
             d.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             d.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
-            d.setMaxGroupCount(random.nextInt(8));
+            d.setMaxGroupCount(1+random.nextInt(8));
 
             d.setHasCar(random.nextBoolean());
 
@@ -138,17 +139,25 @@ public class DetectiveSolution {
             problem.getLocationList().add(detLoc);
         }
 
-        for(Detective d: detectives) d.getDetectives().addAll(detectives);
+        for (int i = 0; i < detectives.size(); i++){
+            Detective d = detectives.get(i);
+            if (i != 0){
+                d.setPrev(detectives.get(i-1));
+            }
+            if( i != detectives.size()-1){
+                d.setNext(detectives.get(i+1));
+            }
+        }
 
         // 4. Step - Thieve groups
 
         for( int i = 1; i <= scale; i++){
             Visit t = new Visit();
             t.setName("ThiefGroup-"+i);
-            t.setExpMonths(random.nextInt(12));
+            t.setExpMonths(random.nextInt(16));
 
             Set<Thief> thieves = new HashSet<>();
-            int thieveCount = 1+2*(random.nextInt(scale))/3;
+            int thieveCount = 2+(random.nextInt(scale))/10;
             for (int j = 1; j <= thieveCount; j++) {
                 var th = random.nextInt(scale);
                 thieves.add(new Thief(th, "Thief" + th));
@@ -156,8 +165,8 @@ public class DetectiveSolution {
             t.setThiefSet(thieves);
 
             t.setVisitType(PHOTO); // default
-            int startHour = random.nextInt(12);
-            int endHour = 1 + startHour + random.nextInt(9);
+            int startHour = 5 + random.nextInt(7);
+            int endHour = 5 + startHour + random.nextInt(5);
 
             t.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             t.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
@@ -263,9 +272,9 @@ public class DetectiveSolution {
         t1.setName("ThiefGroup-1");
         t1.setExpMonths(20);
         t1.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
+            add(new Thief(1, "Thief1"));
+            add(new Thief(2, "Thief2"));
+            add(new Thief(3, "Thief3"));
         }});
 
         t1.setVisitType(Visit.VisitType.PHOTO);
@@ -280,8 +289,8 @@ public class DetectiveSolution {
         t2.setName("ThiefGroup-2");
         t2.setExpMonths(25);
         t2.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(4, "Thief4"));
-            add(new Visit.Thief(5, "Thief5"));
+            add(new Thief(4, "Thief4"));
+            add(new Thief(5, "Thief5"));
         }});
 
         t2.setVisitType(Visit.VisitType.PHOTO);
@@ -296,8 +305,8 @@ public class DetectiveSolution {
         t3.setName("ThiefGroup-3");
         t3.setExpMonths(15);
         t3.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(6, "Thief6"));
+            add(new Thief(1, "Thief1"));
+            add(new Thief(6, "Thief6"));
         }});
 
         t3.setTwStart(21 * HOUR);
@@ -312,10 +321,10 @@ public class DetectiveSolution {
         t4.setName("ThiefGroup-4");
         t4.setExpMonths(21);
         t4.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
-            add(new Visit.Thief(4, "Thief4"));
+            add(new Thief(1, "Thief1"));
+            add(new Thief(2, "Thief2"));
+            add(new Thief(3, "Thief3"));
+            add(new Thief(4, "Thief4"));
         }});
 
         t4.setVisitType(Visit.VisitType.PHOTO);
@@ -330,10 +339,6 @@ public class DetectiveSolution {
         problem.getDetectiveList().addAll(List.of(d1, d2, d3));
         problem.getLocationList().addAll(List.of(t1Loc, t2Loc, t3Loc, t4Loc, detLoc1, detLoc2));
         problem.getVisitList().addAll(List.of(t1, t2, t3, t4));
-
-        d1.getDetectives().addAll(List.of(d1, d2, d3));
-        d2.getDetectives().addAll(List.of(d1, d2, d3));
-        d3.getDetectives().addAll(List.of(d1, d2, d3));
 
         return problem;
     }
@@ -383,9 +388,9 @@ public class DetectiveSolution {
         t1.setName("ThiefGroup-1");
         t1.setExpMonths(20);
         t1.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
+            add(new Thief(1, "Thief1"));
+            add(new Thief(2, "Thief2"));
+            add(new Thief(3, "Thief3"));
         }});
 
         t1.setVisitType(Visit.VisitType.PHOTO);
@@ -400,8 +405,8 @@ public class DetectiveSolution {
         t2.setName("ThiefGroup-2");
         t2.setExpMonths(1);
         t2.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
+            add(new Thief(2, "Thief2"));
+            add(new Thief(3, "Thief3"));
         }});
 
         t2.setVisitType(Visit.VisitType.PHOTO);
@@ -416,8 +421,8 @@ public class DetectiveSolution {
         t3.setName("ThiefGroup-3");
         t3.setExpMonths(15);
         t3.setThiefSet(new HashSet<>() {{
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(4, "Thief4"));
+            add(new Thief(2, "Thief2"));
+            add(new Thief(4, "Thief4"));
         }});
 
         t3.setVisitType(Visit.VisitType.PHOTO);
@@ -427,21 +432,12 @@ public class DetectiveSolution {
         Location t3Loc = new Location(0.0, 5.0);
         t3.setLocation(t3Loc);
 
-        // max thief set size
-        Set<Thief> maximalSet = new HashSet<>(){{
-            add(new Visit.Thief(1, "Thief1"));
-            add(new Visit.Thief(2, "Thief2"));
-            add(new Visit.Thief(3, "Thief3"));
-            add(new Visit.Thief(4, "Thief4"));
-        }};
-
         // Fill detective, office and visits lists
 
         problem.getDetectiveList().addAll(List.of(d1));
         problem.getLocationList().addAll(List.of(t1Loc, t2Loc, t3Loc, detLoc1));
         problem.getVisitList().addAll(List.of(t1, t2, t3));
 
-        d1.getDetectives().addAll(List.of(d1));
         return problem;
     }
 

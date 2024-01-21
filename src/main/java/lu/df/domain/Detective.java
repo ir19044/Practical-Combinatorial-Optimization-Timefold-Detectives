@@ -1,12 +1,16 @@
 package lu.df.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
+import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
+import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lu.df.domain.Visit.Thief;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +18,9 @@ import java.util.Set;
 
 @PlanningEntity
 @Getter @Setter @NoArgsConstructor
+@JsonIdentityInfo(scope = Detective.class,
+        property = "empNr",
+        generator = ObjectIdGenerators.PropertyGenerator.class)
 public class Detective {
 
     private String empNr; // Employee name
@@ -23,9 +30,13 @@ public class Detective {
     private Location workOffice; // Office location
 
     @JsonIgnore
-    private List<Detective> detectives = new ArrayList<>();
+    private Detective next;
+
+    @JsonIgnore
+    private Detective prev;
 
     @PlanningListVariable // CHANGEABLE
+    @JsonIdentityReference
     private List<Visit> visits = new ArrayList<>();
 
     private Integer twStart; // Time to start work
@@ -40,7 +51,7 @@ public class Detective {
 
     private Double costWorkTime; // detective cost
 
-
+    @JsonIgnore
     public Double getTotalDistance(){
 
         // 1. Step - start working in office
@@ -58,20 +69,36 @@ public class Detective {
         return totalDistance;
     }
 
+    @JsonIgnore
     // NB! Return true <=> union of all sets for all detectives contains visit.getThiefSet()
     public final boolean isGivenSetCoveredByAnotherSets(Visit visit){
 
         Set<Thief> thiefSet = visit.getThiefSet();
         Set<Thief> coveredByAll = new HashSet<>();
 
-        for(Detective detective: this.getDetectives()){
-            Set<Thief> coveredByDetective = this.getCovered(detective, visit);
+        Detective d = this;
+        while (d != null){
+            Set<Thief> coveredByDetective = this.getCovered(d, visit);
+            coveredByAll.addAll(coveredByDetective);
+            d = d.getNext();
+        }
+
+        d = this;
+        while (d.getPrev() != null){
+            d = d.getPrev();
+            Set<Thief> coveredByDetective = this.getCovered(d, visit);
             coveredByAll.addAll(coveredByDetective);
         }
+
+       // for(Detective detective: this.getDetectives()){
+        //    Set<Thief> coveredByDetective = this.getCovered(detective, visit);
+       //     coveredByAll.addAll(coveredByDetective);
+       // }
 
         return coveredByAll.containsAll(thiefSet);
     }
 
+    @JsonIgnore
     private Set<Thief> getCovered(Detective detective, Visit visit){
         Set<Thief> foundCovered = new HashSet<>();
 

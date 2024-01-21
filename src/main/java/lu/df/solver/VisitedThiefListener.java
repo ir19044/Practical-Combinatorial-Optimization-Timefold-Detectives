@@ -4,7 +4,7 @@ import ai.timefold.solver.core.api.domain.variable.VariableListener;
 import ai.timefold.solver.core.api.score.director.ScoreDirector;
 import lu.df.domain.DetectiveSolution;
 import lu.df.domain.Visit;
-import lu.df.domain.Visit.Thief;
+import lu.df.domain.Thief;
 import java.util.HashSet;
 import java.util.Set;
 import static lu.df.domain.Visit.VisitType.PHOTO;
@@ -55,12 +55,37 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             int catchGroupCount = visit.getPrev() != null ? visit.getPrev().getCatchGroupCount() : 0;
             int distanceToVisit = visit.getPrev() != null ? visit.getPrev().getDistanceToVisit() : 0;
 
-            int arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
-                    ? visit.getPrev().getDepartureTime() +
-                            visit.getPrev().getLocation().timeTo(visit)
-                    :  Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
+
+            int arrival;
+
+            if(visit.getPrev() != null && visit.getPrev().getArrivalTime() != null){
+                arrival = visit.getPrev().getDepartureTime() + visit.getPrev().getLocation().timeTo(visit);
+            }
+            else if (visit.getVisitType() == PHOTO && !visit.getDetective().isGivenSetCoveredByAnotherSets(visit)){
+                arrival = Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
+            }
+            else{
+                arrival = visit.getDetective().getTwStart();
+            }
+
+            //int arrival = visit.getPrev() != null && visit.getPrev().getArrivalTime() != null
+             //       ? visit.getPrev().getDepartureTime() +
+            ///                visit.getPrev().getLocation().timeTo(visit)
+            //        :  Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
 
             // 2. Step - Consequences. Update all data after variable change.
+
+            var firstVisit = visit;
+          //  while(firstVisit.getPrev() != null){
+          //      firstVisit = firstVisit.getPrev();
+           // }
+
+            if(firstVisit.getPrev() == null && firstVisit.getName().equals("ThiefGroup-7")
+            && firstVisit.getNext() != null && firstVisit.getNext().getName().equals("ThiefGroup-9")){
+                var a =2;
+            }
+
+
 
             Visit shadowVisit = visit;
             while (shadowVisit != null) {
@@ -109,7 +134,12 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
                 scoreDirector.beforeVariableChanged(shadowVisit, "distanceToVisit");
 
                 if(shadowVisit.getPrev() != null) {
-                    distanceToVisit += (int) Math.round (shadowVisit.getPrev().getLocation().distanceTo(shadowVisit.getLocation(), shadowVisit));
+                    if(shadowVisit.getPrev().getVisitType() == PHOTO && !shadowVisit.getDetective().isGivenSetCoveredByAnotherSets(shadowVisit.getPrev())) {
+                        distanceToVisit += (int) Math.round(shadowVisit.getPrev().getLocation().distanceTo(shadowVisit.getLocation(), shadowVisit));
+                    }
+                    else{
+                        distanceToVisit += (int) Math.round(shadowVisit.getDetective().getWorkOffice().distanceTo(shadowVisit.getLocation(), shadowVisit));
+                    }
                 }
                 else if ( shadowVisit.getVisitType() == PHOTO) {
                     distanceToVisit += (int) Math.round(shadowVisit.getLocation().distanceTo(shadowVisit.getDetective().getWorkOffice(), shadowVisit));

@@ -50,7 +50,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .forEach(Visit.class)
                 .filter(visit -> visit.getVisitType() == PHOTO && visit.getDistanceToVisit() != null && visit.getDistanceToVisit() > 0)
                 .join(Detective.class, equal(Visit::getDetective, v -> v))
-                .penalize(HardSoftScore.ONE_SOFT, (visit, detective) ->
+                .penalize(HardSoftScore.ONE_HARD, (visit, detective) ->
                         visit.getNext() == null ||
                                 !Objects.equals(visit.getNext().getLocation().getLat(), detective.getWorkOffice().getLat()) ||
                                 !Objects.equals(visit.getNext().getLocation().getLon(), detective.getWorkOffice().getLon())

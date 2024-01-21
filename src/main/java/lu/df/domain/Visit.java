@@ -2,6 +2,10 @@ package lu.df.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,31 +20,13 @@ import java.util.Set;
 
 @PlanningEntity
 @Getter @Setter @NoArgsConstructor
+@JsonIdentityInfo(scope = Visit.class,
+        property = "name",
+        generator = ObjectIdGenerators.PropertyGenerator.class)
 public class Visit {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public enum VisitType {PHOTO, PROTOCOL}
-
-    @Getter @Setter
-    public static class Thief { private int id; private String name;
-        public Thief(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Thief thief = (Thief) o;
-            return id == thief.id && Objects.equals(name, thief.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(id, name);
-        }
-    }
 
     private String name; // thief group name / office name
 
@@ -53,12 +39,15 @@ public class Visit {
     private Set<Thief> thiefSet;
 
     @InverseRelationShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference
     private Detective detective;
 
     @NextElementShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference
     private Visit next;
 
     @PreviousElementShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference
     private Visit prev;
 
     // If at least one changed, then recalculate thiefList
@@ -82,12 +71,14 @@ public class Visit {
     @PiggybackShadowVariable(shadowVariableName = "coveredSet")
     private Integer distanceToVisit;
 
+    @JsonIgnore
     public Integer getDepartureTime() {
         if(this.getArrivalTime() == null)
             return null;
         else {
             int timeWithPhoto = this.getArrivalTime() + this.getPhotoTime();
-            return this.getNext() != null
+            return this.getNext() != null && this.getNext().getVisitType() == VisitType.PHOTO
+                    && !this.getNext().getDetective().isGivenSetCoveredByAnotherSets(this.getNext())
                     ? Math.max(this.getNext().getTwStart()- this.getLocation().timeTo(this.getNext()), timeWithPhoto)
                     : timeWithPhoto;
         }

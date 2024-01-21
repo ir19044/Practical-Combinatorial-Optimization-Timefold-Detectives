@@ -13,18 +13,29 @@ public class BenchmarkerRunner {
         PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory
                 .createFromSolverConfigXmlResource("SolverConfig.xml");
 
-        //PlannerBenchmarkFactory benchmarkFactoryFromXML = PlannerBenchmarkFactory
-        //        .createFromXmlResource("BenchmarkConfig.xml");
+        PlannerBenchmarkFactory benchmarkFactoryFromXML = PlannerBenchmarkFactory
+                .createFromXmlResource("BenchmarkConfig.xml");
 
-        DetectiveSolution problem = DetectiveSolution.generateData();
+        //DetectiveSolution problem = DetectiveSolution.generateData();
 
         DetectiveSolutionJsonIO detectiveSolutionJsonIO = new DetectiveSolutionJsonIO();
-        detectiveSolutionJsonIO.write(DetectiveSolution.generateData(),
+        detectiveSolutionJsonIO.write(DetectiveSolution.generateData(5),
                 new File("data/classExample5.json"));
 
-        PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
+
+        PlannerBenchmark benchmark = benchmarkFactoryFromXML.buildPlannerBenchmark();
+
+        /*
+        PlannerBenchmark benchmark = benchmarkFactoryFromXML.buildPlannerBenchmark(
+                DetectiveSolution.generateData(5),
+                DetectiveSolution.generateData(10),
+                DetectiveSolution.generateData(20),
+                DetectiveSolution.generateData(35),
+                DetectiveSolution.generateData(50)
+        );
+
+         */
 
         benchmark.benchmarkAndShowReportInBrowser();
-
     }
 }
