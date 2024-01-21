@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         // 1. Step - Define problem
 
-        DetectiveSolution problem = DetectiveSolution.generateData(5);
+        DetectiveSolution problem = DetectiveSolution.generateData(35);
         problem.print();
 
         // 2. Step - Define SolverFactory

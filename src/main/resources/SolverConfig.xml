@@ -14,7 +14,7 @@
 
     <!-- Configure the optimization algorithms (optional) -->
     <termination>
-        <secondsSpentLimit>10</secondsSpentLimit>
+        <secondsSpentLimit>35</secondsSpentLimit>
     </termination>
 
     <constructionHeuristic />
@@ -25,7 +25,7 @@
             <valueTabuSize>1</valueTabuSize>
         </acceptor>
         <forager>
-            <acceptedCountLimit>500</acceptedCountLimit>
+            <acceptedCountLimit>200</acceptedCountLimit>
         </forager>
     </localSearch>
 </solver>
