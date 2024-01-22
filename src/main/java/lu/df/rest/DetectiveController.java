@@ -34,8 +34,9 @@ public class DetectiveController {
     @PostMapping("/solve")
     public void solve(@RequestBody DetectiveSolution problem){
         ghRouter.setDistanceTimeMap(problem.getLocationList());
-        solverManager.solveAndListen(problem.getSolutionId(), id -> problem,
-                solution -> solutionMap.put(solution.getSolutionId(), solution));
+        //solutionIOJSON.write(problem50, new File("data/exampleRiga50.json"));
+        solverManager.solveAndListen(problem.getSolutionId(), id -> problem, solution -> {
+            solutionMap.put(solution.getSolutionId(), solution);});
     }
 
     @GetMapping("/solution")
@@ -66,9 +67,9 @@ public class DetectiveController {
                 }).collect(Collectors.toList());
     }
 
-    @PostConstruct
+   // @PostConstruct
     public void init() {
-        DetectiveSolution problem50 = DetectiveSolution.generateData(50);
+        DetectiveSolution problem50 = DetectiveSolution.generateData(25);
         ghRouter.setDistanceTimeMap(problem50.getLocationList());
         //solutionIOJSON.write(problem50, new File("data/exampleRiga50.json"));
         solverManager.solveAndListen(problem50.getSolutionId(), id -> problem50, solution -> {

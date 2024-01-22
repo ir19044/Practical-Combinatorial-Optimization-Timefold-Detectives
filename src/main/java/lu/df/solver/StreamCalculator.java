@@ -49,7 +49,7 @@ public class StreamCalculator implements ConstraintProvider {
     public Constraint oneGroupOneProtocol(ConstraintFactory constraintFactory) {
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getVisitType() == PHOTO && visit.getDistanceToVisit() != null && visit.getDistanceToVisit() > 0)
+                .filter(visit -> visit.getVisitType() == PHOTO)
                 .join(Detective.class, equal(Visit::getDetective, v -> v))
                 .penalize(HardSoftScore.ONE_HARD, (visit, detective) ->
                         visit.getNext() == null ||

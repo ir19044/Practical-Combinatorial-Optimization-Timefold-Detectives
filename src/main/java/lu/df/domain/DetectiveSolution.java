@@ -17,7 +17,7 @@ import static lu.df.domain.Visit.VisitType.PROTOCOL;
 
 
 @PlanningSolution
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class DetectiveSolution {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetectiveSolution.class);
     private static final Integer MINUTE = 60;
@@ -31,6 +31,8 @@ public class DetectiveSolution {
     private static final Double LOWER_RIGHT_COORD_LON = 24.2520;
 
     private String solutionId;
+
+    public DetectiveSolution() {  }
 
     @PlanningScore
     private HardSoftScore score;
@@ -92,7 +94,7 @@ public class DetectiveSolution {
         List<Location> officeLocations = new ArrayList<>();
 
         for (int i = 1; i <= 2; i++) {
-            //Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+           // Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
 
             Location ofcLoc = new Location(LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
                     UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
@@ -127,11 +129,11 @@ public class DetectiveSolution {
             d.setExperienceMonths(10+random.nextInt(20));
 
             int startHour = random.nextInt(12);
-            int endHour = 14 + random.nextInt(9);
+            int endHour = 12 + random.nextInt(9);
 
             d.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             d.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
-            d.setMaxGroupCount(1+random.nextInt(8));
+            d.setMaxGroupCount(1+random.nextInt(5));
 
             d.setHasCar(random.nextBoolean());
 
@@ -178,7 +180,7 @@ public class DetectiveSolution {
             t.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             t.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
 
-            //Location tLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+           // Location tLoc = new Location(random.nextDouble(100), random.nextDouble(100));
             Location tLoc = new Location(LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
                     UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
 

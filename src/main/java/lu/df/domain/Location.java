@@ -49,8 +49,8 @@ public class Location {
 
         // 2. Case - It is the new set! => We should cover it!
 
-        return this.distanceCarMap.get(location);
-        //return Math.sqrt(Math.pow(this.lat - location.lat, 2) + Math.pow(this.lon - location.lon, 2));
+        //return this.distanceCarMap.get(location);
+        return Math.sqrt(Math.pow(this.lat - location.lat, 2) + Math.pow(this.lon - location.lon, 2));
     }
 
     public Integer timeTo(Visit visit){
@@ -59,7 +59,7 @@ public class Location {
 
         Integer speed = detective.getHasCar() ? CAR_SPEED : AVG_SPEED;
 
-        return this.timeCarMap.get(location);
-        //return (int) Math.round((this.distanceTo(location, visit) / speed) * 3600);
+        //return this.timeCarMap.get(location);
+        return (int) Math.round((this.distanceTo(location, visit) / speed) * 3600);
     }
 }

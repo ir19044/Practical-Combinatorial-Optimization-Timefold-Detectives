@@ -29,10 +29,12 @@ public class Detective {
 
     private Location workOffice; // Office location
 
-    @JsonIgnore
+   // @JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
     private Detective next;
 
-    @JsonIgnore
+  //  @JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
     private Detective prev;
 
     @PlanningListVariable // CHANGEABLE

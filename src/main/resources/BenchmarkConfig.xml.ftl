@@ -18,7 +18,7 @@
 
             <!-- Configure the optimization algorithms (optional) -->
             <termination>
-                <secondsSpentLimit>35</secondsSpentLimit>
+                <secondsSpentLimit>30</secondsSpentLimit>
             </termination>
 
             <constructionHeuristic />
@@ -30,12 +30,13 @@
             <inputSolutionFile>data/classExample10.json</inputSolutionFile>
             <inputSolutionFile>data/classExample20.json</inputSolutionFile>
             <inputSolutionFile>data/classExample35.json</inputSolutionFile>
+            <inputSolutionFile>data/classExample40.json</inputSolutionFile>
         </problemBenchmarks>
         <!--<subSingleCount>5</subSingleCount>-->
     </inheritedSolverBenchmark>
 
-    <#list [1] as entityTabuSize>
-    <#list [200] as accepteedCountLimit>
+    <#list [1, 2, 5, 10] as entityTabuSize>
+    <#list [200, 500, 1000] as accepteedCountLimit>
     <solverBenchmark>
         <name>Tabu size ${entityTabuSize} limit ${accepteedCountLimit}</name>
         <solver>
@@ -57,8 +58,8 @@
     </#list>
     </#list>
 
-    <#list [1] as lateAcceptanceSize>
-    <#list [200] as accepteedCountLimit>
+    <#list [1, 5] as lateAcceptanceSize>
+    <#list [200, 1000] as accepteedCountLimit>
     <solverBenchmark>
         <name>LAHC size ${lateAcceptanceSize} limit ${accepteedCountLimit}</name>
         <solver>

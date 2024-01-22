@@ -4,29 +4,26 @@ import ai.timefold.solver.benchmark.api.PlannerBenchmark;
 import ai.timefold.solver.benchmark.api.PlannerBenchmarkFactory;
 import lu.df.domain.DetectiveSolution;
 import lu.df.domain.DetectiveSolutionJsonIO;
+import lu.df.domain.Router;
 
 import java.io.File;
 
 public class BenchmarkerRunner {
 
     public static void main(String[] args) {
-        PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory
-                .createFromSolverConfigXmlResource("SolverConfig.xml");
+        //PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory
+        //        .createFromSolverConfigXmlResource("SolverConfig.xml");
 
-        PlannerBenchmarkFactory benchmarkFactoryFromXML = PlannerBenchmarkFactory
-                .createFromXmlResource("BenchmarkConfig.xml");
 
         PlannerBenchmarkFactory benchmarkTemplateFactoryFromXML = PlannerBenchmarkFactory
                 .createFromFreemarkerXmlResource("BenchmarkConfig.xml.ftl");
 
-        //DetectiveSolution problem = DetectiveSolution.generateData();
-
-       // DetectiveSolutionJsonIO detectiveSolutionJsonIO = new DetectiveSolutionJsonIO();
-        //detectiveSolutionJsonIO.write(DetectiveSolution.generateData(10),
-        //        new File("data/classExample35.json"));
+        DetectiveSolutionJsonIO detectiveSolutionJsonIO = new DetectiveSolutionJsonIO();
+        detectiveSolutionJsonIO.write(DetectiveSolution.generateData(5),
+                new File("data/classExample5.json"));
 
 
-        PlannerBenchmark benchmark = benchmarkTemplateFactoryFromXML.buildPlannerBenchmark();
+        //PlannerBenchmark benchmark = benchmarkTemplateFactoryFromXML.buildPlannerBenchmark();
 
         /*
         PlannerBenchmark benchmark = benchmarkFactoryFromXML.buildPlannerBenchmark(
@@ -37,7 +34,6 @@ public class BenchmarkerRunner {
                 DetectiveSolution.generateData(50)
         );
          */
-
-        benchmark.benchmarkAndShowReportInBrowser();
+        //benchmark.benchmarkAndShowReportInBrowser();
     }
 }

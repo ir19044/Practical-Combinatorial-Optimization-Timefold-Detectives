@@ -92,7 +92,6 @@ function renderRoutes(solution, indictments) {
             var thiefSetContent = visit.thiefSet !== null ? '<br>thiefSet={' + Array.from(visit.thiefSet).map(thief => thief.id).sort((a, b) => a - b).join(', ') + '}' : '';
 
             detective_div.append($('<a data-toggle="popover" data-bs-html="true" data-bs-content="'+
-                'distanceToVisit=' + visit.distanceToVisit +
                 '<br>arrival=' + formatTime(visit.arrivalTime) +
                 '<br>photoTime=' + formatTime(visit.photoTime) +
                 '<br>catchGroupCount=' + visit.catchGroupCount +
