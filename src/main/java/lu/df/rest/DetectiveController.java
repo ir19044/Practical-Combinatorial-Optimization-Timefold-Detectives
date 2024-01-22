@@ -5,7 +5,9 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.constraint.Indictment;
 import ai.timefold.solver.core.api.solver.SolutionManager;
 import ai.timefold.solver.core.api.solver.SolverManager;
+import jakarta.annotation.PostConstruct;
 import lu.df.domain.DetectiveSolution;
+import lu.df.domain.Router;
 import lu.df.solver.SimpleIndictmentObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,11 @@ public class DetectiveController {
 
     private Map<String, DetectiveSolution> solutionMap = new HashMap<>();
 
+    private Router ghRouter = Router.getDefaultRouterInstance();
+
     @PostMapping("/solve")
     public void solve(@RequestBody DetectiveSolution problem){
+        ghRouter.setDistanceTimeMap(problem.getLocationList());
         solverManager.solveAndListen(problem.getSolutionId(), id -> problem,
                 solution -> solutionMap.put(solution.getSolutionId(), solution));
     }
@@ -61,4 +66,12 @@ public class DetectiveController {
                 }).collect(Collectors.toList());
     }
 
+    @PostConstruct
+    public void init() {
+        DetectiveSolution problem50 = DetectiveSolution.generateData(50);
+        ghRouter.setDistanceTimeMap(problem50.getLocationList());
+        //solutionIOJSON.write(problem50, new File("data/exampleRiga50.json"));
+        solverManager.solveAndListen(problem50.getSolutionId(), id -> problem50, solution -> {
+            solutionMap.put(solution.getSolutionId(), solution);});
+    }
 }

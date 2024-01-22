@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
 import static lu.df.domain.Visit.VisitType.PHOTO;
+import static lu.df.domain.Visit.VisitType.PROTOCOL;
 
 
 public class StreamCalculator implements ConstraintProvider {
@@ -116,7 +117,11 @@ public class StreamCalculator implements ConstraintProvider {
     public Constraint visitOutsideTwFinish(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getDepartureTime() != null && visit.getDepartureTime() > visit.getTwFinish())
+                .filter(visit -> (visit.getDepartureTime() != null && visit.getDepartureTime() > visit.getTwFinish())
+                        && ((visit.getVisitType() == PHOTO && visit.getPhotoTime() > 0) ||
+                        visit.getVisitType() == PROTOCOL &&
+                                ((visit.getPrev() == null && visit.getDistanceToVisit() > 0)
+                                        || (visit.getPrev() != null && visit.getDistanceToVisit() - visit.getPrev().getDistanceToVisit() > 0))))
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("visitOutsideTwFinish");
     }
@@ -125,7 +130,11 @@ public class StreamCalculator implements ConstraintProvider {
     public Constraint visitOutsideTwStart(ConstraintFactory constraintFactory){
         return constraintFactory
                 .forEach(Visit.class)
-                .filter(visit -> visit.getDepartureTime() != null && visit.getArrivalTime() < visit.getTwStart())
+                .filter(visit -> (visit.getDepartureTime() != null && visit.getArrivalTime() < visit.getTwStart())
+                        && ((visit.getVisitType() == PHOTO && visit.getPhotoTime() > 0) ||
+                             visit.getVisitType() == PROTOCOL &&
+                                     ((visit.getPrev() == null && visit.getDistanceToVisit() > 0)
+                                             || (visit.getPrev() != null && visit.getDistanceToVisit() - visit.getPrev().getDistanceToVisit() > 0))))
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("visitOutsideTwStart");
     }
@@ -150,7 +159,7 @@ public class StreamCalculator implements ConstraintProvider {
                 .join(Visit.class, Joiners.equal(d->d, Visit::getDetective))
                 .filter((detective, last) -> last.getNext() == null)
                 .filter(((detective, last) -> detective.getMaxGroupCount() < last.getCatchGroupCount()))
-                .penalize(HardSoftScore.ONE_HARD)
+                .penalize(HardSoftScore.ONE_HARD, (d,l) -> l.getCatchGroupCount()-d.getMaxGroupCount())
                 .asConstraint("worktimeGroupCountOverflow");
     }
 }

@@ -25,6 +25,11 @@ public class DetectiveSolution {
     private static final Integer DAY = HOUR * 24;
     private static final Integer TIME0AM = 0;
 
+    private static final Double UPPER_LEFT_COORD_LAT = 56.9947; // Riga coordinate rectangle
+    private static final Double UPPER_LEFT_COORD_LON = 24.0309;
+    private static final Double LOWER_RIGHT_COORD_LAT = 56.8884;
+    private static final Double LOWER_RIGHT_COORD_LON = 24.2520;
+
     private String solutionId;
 
     @PlanningScore
@@ -87,7 +92,10 @@ public class DetectiveSolution {
         List<Location> officeLocations = new ArrayList<>();
 
         for (int i = 1; i <= 2; i++) {
-            Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+            //Location ofcLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+
+            Location ofcLoc = new Location(LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
+                    UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
 
             for (int j = 1; j <=2 + 4 * scale / 7 ; j++) {
                 Visit ofc = new Visit();
@@ -119,7 +127,7 @@ public class DetectiveSolution {
             d.setExperienceMonths(10+random.nextInt(20));
 
             int startHour = random.nextInt(12);
-            int endHour = 12 + random.nextInt(9);
+            int endHour = 14 + random.nextInt(9);
 
             d.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             d.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
@@ -170,7 +178,10 @@ public class DetectiveSolution {
             t.setTwStart(startHour*HOUR+random.nextInt(59)*MINUTE);
             t.setTwFinish(endHour*HOUR+random.nextInt(59)*MINUTE);
 
-            Location tLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+            //Location tLoc = new Location(random.nextDouble(100), random.nextDouble(100));
+            Location tLoc = new Location(LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
+                    UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
+
             t.setLocation(tLoc);
 
             problem.getLocationList().add(tLoc);

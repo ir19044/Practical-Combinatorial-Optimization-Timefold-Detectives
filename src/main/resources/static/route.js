@@ -74,6 +74,7 @@ function renderRoutes(solution, indictments) {
             '<br>hasCar=' + detective.hasCar +
             '<br>twStart=' + formatTime(detective.twStart) +
             '<br>twFinish=' + formatTime(detective.twFinish) +
+            '<br>location=(' + detective.workOffice.lat + ', ' + detective.workOffice.lon + ')' +
             '<hr>' +
             getEntityPopoverContent(detective.regNr, indictmentMap) +
             '" data-bs-original-title="'+ detective.empNr + ' (' + detective.experienceMonths + ')' +'"><span class="'+ v_badge +'">'+
@@ -83,14 +84,22 @@ function renderRoutes(solution, indictments) {
             var visit_badge = "badge bg-danger";
 
             if (indictmentMap[visit.name] == null || getHardScore(indictmentMap[visit.name].score)==0) { visit_badge = "badge bg-success"; }
+
+            if (visit.visitType === "PHOTO" && visit.photoTime == 0) {
+                visit_badge = "badge bg-secondary";
+            }
+
+            var thiefSetContent = visit.thiefSet !== null ? '<br>thiefSet={' + Array.from(visit.thiefSet).map(thief => thief.id).sort((a, b) => a - b).join(', ') + '}' : '';
+
             detective_div.append($('<a data-toggle="popover" data-bs-html="true" data-bs-content="'+
                 'distanceToVisit=' + visit.distanceToVisit +
                 '<br>arrival=' + formatTime(visit.arrivalTime) +
-                '<br>photoTime=' + visit.photoTime +
+                '<br>photoTime=' + formatTime(visit.photoTime) +
                 '<br>catchGroupCount=' + visit.catchGroupCount +
                 '<br>twStart=' + formatTime(visit.twStart) +
                 '<br>twFinish=' + formatTime(visit.twFinish) +
-                '<br>coveredSet={' + Array.from(visit.coveredSet).map(thief => thief.id).sort((a, b) => a - b).join(', ') + '}' +
+                '<br>location=(' + visit.location.lat + ', ' + visit.location.lon + ')' +
+                thiefSetContent +
                 '<hr>' +
                 getEntityPopoverContent(visit.name, indictmentMap) +
                 '" data-bs-original-title="'+

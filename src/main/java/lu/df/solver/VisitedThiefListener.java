@@ -59,7 +59,12 @@ public class VisitedThiefListener implements VariableListener<DetectiveSolution,
             int arrival;
 
             if(visit.getPrev() != null && visit.getPrev().getArrivalTime() != null){
-                arrival = visit.getPrev().getDepartureTime() + visit.getPrev().getLocation().timeTo(visit);
+                if(visit.getVisitType() == PHOTO && !visit.getDetective().isGivenSetCoveredByAnotherSets(visit)) {
+                    arrival = visit.getPrev().getDepartureTime() + visit.getPrev().getLocation().timeTo(visit);
+                }
+                else{
+                    arrival = visit.getPrev() != null ? visit.getPrev().getDepartureTime() : visit.getDetective().getTwStart();
+                }
             }
             else if (visit.getVisitType() == PHOTO && !visit.getDetective().isGivenSetCoveredByAnotherSets(visit)){
                 arrival = Math.max(visit.getTwStart()- timeToDrive, detectiveStartTime+timeToDrive); // start in office
